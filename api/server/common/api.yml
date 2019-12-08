@@ -11,47 +11,13 @@ tags:
 - name: Specification
   description: The swagger API specification
 paths:
-  /examples:
-    get:
-      tags:
-      - Examples
-      description: Fetch all examples
-      responses:
-        200:
-          description: Returns all examples
-          content: {}
+  /examples/sendNotification:
     post:
       tags:
-      - Examples
-      description: Create a new example
-      requestBody:
-        description: an example
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExampleBody'
-        required: true
+        - Examples
       responses:
         200:
-          description: Returns all examples
-          content: {}
-  /examples/{id}:
-    get:
-      tags:
-      - Examples
-      parameters:
-      - name: id
-        in: path
-        description: The id of the example to retrieve
-        required: true
-        schema:
-          type: integer
-      responses:
-        200:
-          description: Return the example with the specified id
-          content: {}
-        404:
-          description: Example not found
+          description: test push notification
           content: {}
   /spec:
     get:
@@ -61,14 +27,58 @@ paths:
         200:
           description: Return the API specification
           content: {}
+  /calls:
+    get:
+      tags:
+        - Numbers
+      responses:
+        200:
+          description: Returning all calls in process
+          content: {}
+    post:
+      tags:
+        - Numbers
+      responses:
+        200:
+          description: Call forwarding successfully created
+          content: {}
+  /calls/status-changed:
+    post:
+      tags:
+        - Numbers
+      responses:
+        200:
+          description: call status is changed for this incoming call
+          content: {}
+  /users/allLocalNumbers:
+    get:
+      tags:
+        - Users
+      parameters:
+        - in: query
+          name: accountSid
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: accessToken
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Returning all local numbers belongs to this user
+          content: {}
 components:
   schemas:
-    ExampleBody:
-      title: example
+    allActiveNumbers:
+      title: numbers
       required:
-      - name
+      - accountSid
+      - accessToken
       type: object
       properties:
-        name:
+        accountSid:
           type: string
-          example: no_stress
+        accessToken:
+          type: string

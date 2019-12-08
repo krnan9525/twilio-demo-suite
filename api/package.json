@@ -1,5 +1,5 @@
 {
-  "name": "myapp",
+  "name": "call-router-api",
   "version": "1.0.0",
   "description": "call-router-api",
   "main": "index.js",
@@ -12,12 +12,17 @@
     "test:debug": "mocha --inspect-brk test/**/*.ts --exit"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-openapi-validator": "^2.14.4",
     "pino": "^5.13.6",
-    "express-openapi-validator": "^2.14.4"
+    "twilio": "^3.38.0",
+    "web-push": "^3.4.3",
+    "redis": "^2.8.0",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "@types/chai": "^4.2.4",
@@ -35,5 +40,5 @@
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
-  "author": "Carmine DiMascio <cdimascio@gmail.com> (https://github.com/cdimascio)"
+  "author": "Mark Yang <me@marknanyang.com>"
 }
