@@ -1,7 +1,7 @@
 export class Endpoints {
   host =
     process.env.NODE_ENV === 'production'
-      ? 'https://marknanyang.com/call-router'
+      ? 'https://marknanyang.com/call-router/api'
       : 'http://localhost:3000';
 
   activeNumbers = {
