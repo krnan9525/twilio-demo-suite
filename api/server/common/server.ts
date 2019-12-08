@@ -5,9 +5,8 @@ import bodyParser from 'body-parser';
 import http from 'http';
 import os from 'os';
 import cookieParser from 'cookie-parser';
-
-  import installValidator from './openapi';
-
+import installValidator from './openapi';
+import cors from 'cors';
 import l from './logger';
 
 const app = express();
@@ -21,10 +20,11 @@ export default class ExpressServer {
     app.use(bodyParser.text({ limit: process.env.REQUEST_LIMIT || '100kb'}));
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(express.static(`${root}/public`));
+    app.use(cors());
   }
 
   router(routes: (app: Application) => void): ExpressServer {
-    installValidator(app, routes)
+    installValidator(app, routes);
     return this;
   }
 

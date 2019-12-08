@@ -8,7 +8,7 @@ export default function openapi(app, routes) {
     app.use(process.env.OPENAPI_SPEC || '/spec', express.static(apiSpec));
 
     new OpenApiValidator({
-    apiSpec,
+        apiSpec,
     }).install(app);
 
     routes(app);
