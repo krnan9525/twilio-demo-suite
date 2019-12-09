@@ -19,7 +19,6 @@ export class Numbers {
     return axios
       .post(endpoints.host + endpoints.call.post, payload)
       .then(res => {
-        console.log(res);
         return res.data;
       });
   }
