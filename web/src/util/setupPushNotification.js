@@ -36,8 +36,9 @@ function subscribeUser() {
           userVisibleOnly: true,
           applicationServerKey: Keys.applicationServerKey
         })
-        .then(function(sub) {
-          console.log(JSON.stringify(sub));
+        .then(sub => {
+          // console.log(JSON.stringify(sub));
+          console.log('Subscribed with WebPush API');
         })
         .catch(function(e) {
           if (Notification.permission === 'denied') {
