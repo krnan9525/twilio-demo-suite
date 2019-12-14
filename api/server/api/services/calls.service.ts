@@ -40,7 +40,7 @@ export class CallsService {
           twiml: voiceResponse.toString(),
           from: twilioNumber,
           to: hostNumber,
-          statusCallback: process.env.NODE_ENV === 'production' ? '' : 'https://1b98a9bc.ngrok.io/api/v1/calls/status-changed',
+          statusCallback: process.env.NODE_ENV === 'production' ? '' : 'https://intense-stream-63035.herokuapp.com//api/v1/calls/status-changed',
           statusCallbackEvent: ['completed', 'no-answer', 'canceled'],
           statusCallbackMethod: 'POST',
         })
