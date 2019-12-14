@@ -83,7 +83,6 @@ export default {
   methods: {
     call() {
       pushSubscriber.getSubscriber().then(res => {
-        console.log(res);
         calls
           .forwardCall({
             clientInfo: {
@@ -97,9 +96,7 @@ export default {
             hostNumber: this.hostNumber,
             twilioNumber: this.twilioNumber
           })
-          .then(callRes => {
-            console.log(callRes);
-          });
+          .then(callRes => {});
       });
     }
   }
