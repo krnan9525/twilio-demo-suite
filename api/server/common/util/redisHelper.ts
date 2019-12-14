@@ -1,5 +1,9 @@
 const redis = require('redis');
-const client = redis.createClient();
+const client = redis.createClient({
+  url: process.env.NODE_ENV === 'production'
+    ? '***REMOVED***'
+    : undefined
+});
 const { promisify } = require('util');
 const redisGet = promisify(client.get).bind(client);
 const redisSet = promisify(client.set).bind(client);

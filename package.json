@@ -1,0 +1,23 @@
+{
+  "name": "call-router",
+  "version": "1.0.0",
+  "description": "a Twilio call router app",
+  "main": "index.js",
+  "scripts": {
+    "start:api": "node api/dist/index.js",
+    "dev:api": "cd api && npm run dev",
+    "dev:web": "cd web && npm run serve",
+    "build:api": "cd api && npm run compile",
+    "build:web": "cd web && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krnan9525/call-router.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krnan9525/call-router/issues"
+  },
+  "homepage": "https://github.com/krnan9525/call-router#readme"
+}
