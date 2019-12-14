@@ -2,7 +2,7 @@ export class Endpoints {
   host =
     // ? 'https://marknanyang.com/call-router/api'
     process.env.NODE_ENV === 'production'
-      ? 'http://marknanyang.com:12222'
+      ? 'https://intense-stream-63035.herokuapp.com'
       : 'http://localhost:3000';
 
   activeNumbers = {
