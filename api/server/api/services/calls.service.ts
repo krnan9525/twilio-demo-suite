@@ -41,7 +41,7 @@ export class CallsService {
           from: twilioNumber,
           to: hostNumber,
           statusCallback: process.env.NODE_ENV === 'production'
-            ? 'https://intense-stream-63035.herokuapp.com/api/v1/calls/status-changed'
+            ? 'https://calls.api.marknanyang.com/api/v1/calls/status-changed'
             : 'https://1b98a9bc.ngrok.io/api/v1/calls/status-changed',
           statusCallbackEvent: ['completed', 'no-answer', 'canceled'],
           statusCallbackMethod: 'POST',
