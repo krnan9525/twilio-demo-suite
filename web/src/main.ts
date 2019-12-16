@@ -14,7 +14,8 @@ import {
   MdField,
   MdCard,
   MdMenu,
-  MdList
+  MdList,
+  MdSnackbar
   // @ts-ignore
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
@@ -30,6 +31,7 @@ Vue.use(MdField);
 Vue.use(MdCard);
 Vue.use(MdMenu);
 Vue.use(MdList);
+Vue.use(MdSnackbar);
 
 Vue.config.productionTip = false;
 

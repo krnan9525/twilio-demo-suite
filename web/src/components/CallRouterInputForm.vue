@@ -1,62 +1,78 @@
 <template>
-  <form class="input-form" novalidate>
-    <md-card class="md-layout-item md-size-50 md-small-size-100">
-      <md-card-header>
-        <div class="md-title">Callers Info</div>
-      </md-card-header>
-      <md-card-content>
-        <div>
-          <md-field>
-            <label for="twilio-number">
-              Twilio phone number to initiate the call
-            </label>
-            <md-select
-              name="twilioNumber"
-              id="twilio-number"
-              v-model="twilioNumber"
-            >
-              <md-option
-                v-for="(number, key) in activeNumbers"
-                :value="number.number"
-                :key="key"
+  <div>
+    <form class="input-form" novalidate>
+      <md-card class="md-layout-item md-size-50 md-small-size-100">
+        <md-card-header>
+          <div class="md-title">Callers Info</div>
+        </md-card-header>
+        <md-card-content>
+          <div>
+            <md-field>
+              <label for="twilio-number">
+                Twilio phone number to initiate the call
+              </label>
+              <md-select
+                name="twilioNumber"
+                id="twilio-number"
+                v-model="twilioNumber"
               >
-                {{ number.friendlyName }}
-              </md-option>
-            </md-select>
-          </md-field>
-          <md-field>
-            <label for="host-number">Your number to receive the call</label>
-            <!--              TODO: add validator             -->
-            <md-input
-              name="hostNumber"
-              id="host-number"
-              type="number"
-              v-model="hostNumber"
-            />
-          </md-field>
-          <md-field>
-            <label for="connecting-number">Number you want to call</label>
-            <!--              TODO: add validator             -->
-            <md-input
-              name="connectingNumber"
-              id="connecting-number"
-              type="number"
-              v-model="connectNumber"
-            />
-          </md-field>
-          <md-button class="md-raised md-primary" @click="call()">
-            Call
-          </md-button>
-        </div>
-      </md-card-content>
-    </md-card>
-  </form>
+                <md-option
+                  v-for="(number, key) in activeNumbers"
+                  :value="number.number"
+                  :key="key"
+                >
+                  {{ number.friendlyName }}
+                </md-option>
+              </md-select>
+            </md-field>
+            <md-field>
+              <label for="host-number">Your number to receive the call</label>
+              <!--              TODO: add validator             -->
+              <md-input
+                name="hostNumber"
+                id="host-number"
+                type="number"
+                v-model="hostNumber"
+              />
+            </md-field>
+            <md-field>
+              <label for="connecting-number">Number you want to call</label>
+              <!--              TODO: add validator             -->
+              <md-input
+                name="connectingNumber"
+                id="connecting-number"
+                type="number"
+                v-model="connectNumber"
+              />
+            </md-field>
+            <md-button
+              class="md-raised md-primary"
+              @click="call()"
+              :disable="callButtonDisabled"
+            >
+              Call
+            </md-button>
+          </div>
+        </md-card-content>
+      </md-card>
+    </form>
+    <md-snackbar
+      md-position="center"
+      :md-duration="Infinity"
+      :md-active.sync="showSnackbar"
+      md-persistent
+    >
+      <span>{{ snackbarMessage }}</span>
+      <md-button class="md-primary" @click="showSnackbar = false">
+        Close
+      </md-button>
+    </md-snackbar>
+  </div>
 </template>
 <script>
 import numbers from '@/util/network/numbers';
 import pushSubscriber from '@/util/pushSubscriber';
 import calls from '@/util/network/calls';
-import endpoints from '@/util/network/endpoints';
 
 export default {
   name: 'CallRouterInputForm',
@@ -69,7 +85,10 @@ export default {
       activeNumbers: [],
       twilioNumber: null,
       hostNumber: null,
-      connectNumber: null
+      connectNumber: null,
+      snackbarMessage: '',
+      showSnackbar: false,
+      callButtonDisabled: false
     };
   },
   mounted: function() {
@@ -83,6 +102,7 @@ export default {
   methods: {
     call() {
       pushSubscriber.getSubscriber().then(res => {
+        this.callButtonDisabled = true;
         calls
           .forwardCall({
             clientInfo: {
@@ -96,7 +116,21 @@ export default {
             hostNumber: this.hostNumber,
             twilioNumber: this.twilioNumber
           })
-          .then(callRes => {});
+          .then(callRes => {
+            const callSid = callRes.sid;
+            this.callButtonDisabled = false;
+            this.snackbarMessage = `Request is submitted. You will receive a call shortly.${
+              callSid ? '\nCall Sid: ' + callSid : ''
+            }`;
+            this.showSnackbar = true;
+          })
+          .catch(e => {
+            console.log('Error making the API call: ' + e.message);
+            this.callButtonDisabled = false;
+            this.snackbarMessage =
+              'There is an error connecting your call. Please check Twilio dashboard for more information.';
+            this.showSnackbar = true;
+          });
       });
     }
   }
