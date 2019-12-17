@@ -58,7 +58,7 @@
     </form>
     <md-snackbar
       md-position="center"
-      :md-duration="Infinity"
+      :md-duration="snackbarDuration"
       :md-active.sync="showSnackbar"
       md-persistent
     >
@@ -88,18 +88,34 @@ export default {
       connectNumber: null,
       snackbarMessage: '',
       showSnackbar: false,
+      snackbarDuration: 2500,
       callButtonDisabled: false
     };
   },
   mounted: function() {
-    // TODO: use event and validator instead
-    setTimeout(() => {
-      numbers.getActiveNumbers(this.accountSid, this.accessToken).then(res => {
-        this.activeNumbers = res;
-      });
-    }, 1000);
+    this.getActiveNumbers();
   },
   methods: {
+    getActiveNumbers() {
+      setTimeout(() => {
+        numbers
+          .getActiveNumbers(this.accountSid, this.accessToken)
+          .then(res => {
+            this.activeNumbers = res;
+            this.snackbarDuration = 2500;
+            this.snackbarMessage = 'Twilio numbers are fetched and refreshed.';
+            this.showSnackbar = true;
+          })
+          .catch(e => {
+            console.log('Error fetching Twilio numbers: ' + e.message);
+            this.activeNumbers = [];
+            this.snackbarDuration = Infinity;
+            this.snackbarMessage =
+              'Error fetching available Twilio numbers. Please check your credentials.';
+            this.showSnackbar = true;
+          });
+      }, 100);
+    },
     call() {
       pushSubscriber.getSubscriber().then(res => {
         this.callButtonDisabled = true;
@@ -119,6 +135,7 @@ export default {
           .then(callRes => {
             const callSid = callRes.sid;
             this.callButtonDisabled = false;
+            this.snackbarDuration = Infinity;
             this.snackbarMessage = `Request is submitted. You will receive a call shortly.${
               callSid ? '\nCall Sid: ' + callSid : ''
             }`;
@@ -127,6 +144,7 @@ export default {
           .catch(e => {
             console.log('Error making the API call: ' + e.message);
             this.callButtonDisabled = false;
+            this.snackbarDuration = Infinity;
             this.snackbarMessage =
               'There is an error connecting your call. Please check Twilio dashboard for more information.';
             this.showSnackbar = true;
