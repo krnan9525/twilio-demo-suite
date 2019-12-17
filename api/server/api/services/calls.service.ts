@@ -51,7 +51,8 @@ export class CallsService {
           // L.debug(call);
           Redis.set(call.sid, JSON.stringify(subscription))
             .then(() => resolve(call));
-        });
+        })
+        .catch(e => reject(e));
     })
   }
 
