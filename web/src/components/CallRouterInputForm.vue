@@ -107,7 +107,7 @@ export default {
             this.showSnackbar = true;
           })
           .catch(e => {
-            console.log('Error fetching Twilio numbers: ' + e.message);
+            // console.log('Error fetching Twilio numbers: ' + e.message);
             this.activeNumbers = [];
             this.snackbarDuration = Infinity;
             this.snackbarMessage =
@@ -142,7 +142,7 @@ export default {
             this.showSnackbar = true;
           })
           .catch(e => {
-            console.log('Error making the API call: ' + e.message);
+            // console.log('Error making the API call: ' + e.message);
             this.callButtonDisabled = false;
             this.snackbarDuration = Infinity;
             this.snackbarMessage =
