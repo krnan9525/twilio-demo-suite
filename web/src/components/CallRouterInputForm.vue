@@ -105,14 +105,21 @@ export default {
             this.snackbarDuration = 2500;
             this.snackbarMessage = 'Twilio numbers are fetched and refreshed.';
             this.showSnackbar = true;
+            if (this.activeNumbers && this.activeNumbers.length > 0) {
+              this.twilioNumber = this.activeNumbers[0];
+            }
           })
           .catch(e => {
             // console.log('Error fetching Twilio numbers: ' + e.message);
             this.activeNumbers = [];
             this.snackbarDuration = Infinity;
-            this.snackbarMessage =
-              'Error fetching available Twilio numbers. Please check your credentials.';
+            this.snackbarMessage = `Error fetching available Twilio numbers. ${
+              e.message
+                ? 'Error: ' + e.message
+                : 'Please check your credentials.'
+            }`;
             this.showSnackbar = true;
+            this.twilioNumber = null;
           });
       }, 100);
     },
