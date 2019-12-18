@@ -1,5 +1,5 @@
 import CallsService from '../../services/calls.service';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { ISubscription } from '../../../common/util/push';
 
 export class Controller {
@@ -16,8 +16,9 @@ export class Controller {
    * @description create a new call forwarding
    * @param req
    * @param res
+   * @param next
    */
-  createNewCall(req: Request, res: Response): Promise<Response> {
+  createNewCall(req: Request, res: Response, next: NextFunction): void {
     const { accountSid, accessToken, connectNumber, hostNumber, twilioNumber, clientInfo } = req.body;
     const subscription: ISubscription = {
       endpoint: clientInfo.endpoint,
@@ -26,8 +27,9 @@ export class Controller {
         auth: clientInfo.auth
       }
     };
-    return CallsService.createNewCall({accountSid, accessToken, connectNumber, hostNumber, twilioNumber}, subscription)
-      .then(r => res.json(r));
+    CallsService.createNewCall({accountSid, accessToken, connectNumber, hostNumber, twilioNumber}, subscription)
+      .then(r => res.json(r))
+      .catch(next);
   }
 
   /**
