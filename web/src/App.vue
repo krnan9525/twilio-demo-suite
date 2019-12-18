@@ -9,9 +9,9 @@
             </div>
           </div>
           <div class="md-toolbar-row">
-            <md-tabs class="md-primary" md-sync-route>
-              <md-tab id="tab-home" md-label="Home" to="/" exact></md-tab>
-              <md-tab id="/about" md-label="About" to="/about"></md-tab>
+            <md-tabs class="md-primary" md-sync-route md-swipeable>
+              <md-tab id="tab-home" md-label="Home" to="/" exact />
+              <md-tab id="/about" md-label="About" to="/about" />
             </md-tabs>
           </div>
         </md-app-toolbar>

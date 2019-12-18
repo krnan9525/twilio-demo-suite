@@ -10,7 +10,7 @@ module.exports = {
     'prettier/prettier': ['error', { singleQuote: true, semi: true }]
   },
   parserOptions: {
-    parser: '@typescript-eslint/parser'
+    parser: 'babel-eslint'
   },
   overrides: [
     {
