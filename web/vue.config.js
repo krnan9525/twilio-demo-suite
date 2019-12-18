@@ -10,6 +10,5 @@ module.exports = {
     workboxOptions: {
       swSrc: 'service-worker.js'
     }
-  },
-  useTaobaoRegistry: false
+  }
 };
