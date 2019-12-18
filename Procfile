@@ -1,1 +1,1 @@
-web cd api/ && NODE_ENV=production && npm start
+web cd api/ && npm start
