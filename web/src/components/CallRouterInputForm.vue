@@ -69,6 +69,7 @@
     </md-snackbar>
   </div>
 </template>
+
 <script>
 import numbers from '@/util/network/numbers';
 import pushSubscriber from '@/util/pushSubscriber';
@@ -106,7 +107,7 @@ export default {
             this.snackbarMessage = 'Twilio numbers are fetched and refreshed.';
             this.showSnackbar = true;
             if (this.activeNumbers && this.activeNumbers.length > 0) {
-              this.twilioNumber = this.activeNumbers[0];
+              this.twilioNumber = this.activeNumbers[0].number;
             }
           })
           .catch(e => {
@@ -152,8 +153,11 @@ export default {
             // console.log('Error making the API call: ' + e.message);
             this.callButtonDisabled = false;
             this.snackbarDuration = Infinity;
-            this.snackbarMessage =
-              'There is an error connecting your call. Please check Twilio dashboard for more information.';
+            this.snackbarMessage = `There is an error connecting your call. ${
+              e.message
+                ? 'Error: ' + e.message
+                : 'Please check Twilio dashboard for more information.'
+            }`;
             this.showSnackbar = true;
           });
       });
@@ -161,6 +165,7 @@ export default {
   }
 };
 </script>
+
 <style>
 .input-form {
   display: flex;

@@ -31,7 +31,7 @@ export class CallsService {
   createNewCall({ accountSid, accessToken, connectNumber, hostNumber, twilioNumber }, subscription: ISubscription): Promise<ICreateCallResponse> {
     const client = twilio(accountSid, accessToken);
     const voiceResponse = new twilio.twiml.VoiceResponse();
-    voiceResponse.say(`Your call is now connected to ${connectNumber}`);
+    voiceResponse.say(`Your call is now connected to ${connectNumber && connectNumber.split('').join(' ')}`);
     voiceResponse.dial({}, connectNumber);
 
     return new Promise<ICreateCallResponse>((resolve, reject) =>  {
