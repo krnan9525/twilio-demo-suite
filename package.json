@@ -9,7 +9,7 @@
     "dev:web": "cd web && npm run serve",
     "build:api": "cd api && npm run compile",
     "build:web": "cd web && npm run build",
-    "heroku-postbuild": "cd api/ && NODE_ENV=dev && npm i && NODE_ENV=production && npm run compile"
+    "build": "cd api/ && NODE_ENV=dev && npm i && NODE_ENV=production && npm run compile"
   },
   "repository": {
     "type": "git",
