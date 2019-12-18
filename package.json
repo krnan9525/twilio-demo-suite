@@ -16,9 +16,6 @@
     "type": "git",
     "url": "git+https://github.com/krnan9525/call-router.git"
   },
-  "dependencies": {
-    "empty-npm-package-placeholder": "^1.0.0"
-  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/krnan9525/call-router/issues"

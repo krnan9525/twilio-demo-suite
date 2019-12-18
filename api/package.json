@@ -22,7 +22,9 @@
     "twilio": "^3.38.0",
     "web-push": "^3.4.3",
     "redis": "^2.8.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.7.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.4",
@@ -36,9 +38,7 @@
     "shelljs": "^0.8.3",
     "supertest": "^4.0.2",
     "ts-lint": "^4.5.1",
-    "ts-node": "^8.4.1",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.2"
+    "tslint": "^5.20.1"
   },
   "author": "Mark Yang <me@marknanyang.com>"
 }
