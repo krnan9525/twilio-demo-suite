@@ -9,12 +9,14 @@ interface INumber {
 }
 
 export class UsersService {
-
   /**
    * @param accountSid
    * @param accessToken
    */
-  async getNumbers(accountSid: string, accessToken: string): Promise<INumber[]> {
+  async getNumbers(
+    accountSid: string,
+    accessToken: string
+  ): Promise<INumber[]> {
     const url = 'https://preview.twilio.com/Numbers/ActiveNumbers';
     try {
       const res = await axios.get(url, {
@@ -25,11 +27,17 @@ export class UsersService {
       });
       return res.data.items.map(number => {
         return {
-          country: (number.geography && number.geography.iso_country) ? number.geography.iso_country : null,
+          country:
+            number.geography && number.geography.iso_country
+              ? number.geography.iso_country
+              : null,
           number: number.phone_number,
-          friendlyName: (number.configurations && number.configurations.friendly_name) ? number.configurations.friendly_name : null,
+          friendlyName:
+            number.configurations && number.configurations.friendly_name
+              ? number.configurations.friendly_name
+              : null,
           sid: number.sid
-        } as INumber
+        } as INumber;
       });
     } catch (e) {
       L.error(e);

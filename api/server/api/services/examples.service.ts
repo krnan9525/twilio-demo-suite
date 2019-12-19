@@ -1,14 +1,14 @@
-import L from '../../common/logger'
+import L from '../../common/logger';
 
 let id = 0;
 interface Example {
-  id: number,
-  name: string
-};
+  id: number;
+  name: string;
+}
 
 const examples: Example[] = [
-    { id: id++, name: 'example 0' }, 
-    { id: id++, name: 'example 1' }
+  { id: id++, name: 'example 0' },
+  { id: id++, name: 'example 1' }
 ];
 
 export class ExamplesService {
@@ -19,7 +19,7 @@ export class ExamplesService {
 
   byId(id: number): Promise<Example> {
     L.info(`fetch example with id ${id}`);
-    return this.all().then(r => r[id])
+    return this.all().then(r => r[id]);
   }
 
   create(name: string): Promise<Example> {
@@ -28,7 +28,7 @@ export class ExamplesService {
       id: id++,
       name
     };
-    examples.push(example)
+    examples.push(example);
     return Promise.resolve(example);
   }
 }

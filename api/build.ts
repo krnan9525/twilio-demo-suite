@@ -1,4 +1,5 @@
 import s from 'shelljs';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const config = require('./tsconfig.json');
 const outDir = config.compilerOptions.outDir;
 

@@ -63,29 +63,3 @@ or debug them
 ```shell
 npm run test:debug
 ```
-
-## Try It
-* Open you're browser to [http://localhost:3000](http://localhost:3000)
-* Invoke the `/examples` endpoint 
-  ```shell
-  curl http://localhost:3000/api/v1/examples
-  ```
-
-
-## Debug It
-
-#### Debug the server:
-
-```
-npm run dev:debug
-```
-
-#### Debug Tests
-
-```
-npm run test:debug
-```
-
-#### Debug with VSCode
-
-Add these [contents](https://github.com/cdimascio/generator-express-no-stress/blob/next/assets/.vscode/launch.json) to your `.vscode/launch.json` file
