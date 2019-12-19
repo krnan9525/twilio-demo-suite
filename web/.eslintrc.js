@@ -12,6 +12,11 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
+  ignorePatterns: [
+    'node_modules/',
+    'src/shims-vue.d.ts',
+    'src/shims-tsx.d.ts'
+  ],
   overrides: [
     {
       files: [

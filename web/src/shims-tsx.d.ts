@@ -1,5 +1,5 @@
 import Vue, { VNode } from 'vue';
-
+/* eslint-disable */
 declare global {
   namespace JSX {
     // tslint:disable no-empty-interface

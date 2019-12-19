@@ -19,7 +19,14 @@ export class Controller {
    * @param next
    */
   createNewCall(req: Request, res: Response, next: NextFunction): void {
-    const { accountSid, accessToken, connectNumber, hostNumber, twilioNumber, clientInfo } = req.body;
+    const {
+      accountSid,
+      accessToken,
+      connectNumber,
+      hostNumber,
+      twilioNumber,
+      clientInfo
+    } = req.body;
     const subscription: ISubscription = {
       endpoint: clientInfo.endpoint,
       keys: {
@@ -27,7 +34,10 @@ export class Controller {
         auth: clientInfo.auth
       }
     };
-    CallsService.createNewCall({accountSid, accessToken, connectNumber, hostNumber, twilioNumber}, subscription)
+    CallsService.createNewCall(
+      { accountSid, accessToken, connectNumber, hostNumber, twilioNumber },
+      subscription
+    )
       .then(r => res.json(r))
       .catch(next);
   }
@@ -40,8 +50,9 @@ export class Controller {
    */
   statusChanged(req: Request, res: Response): void {
     const { CallSid, CallDuration, CallStatus } = req.body;
-    CallsService.changeStatus(CallSid, CallStatus, CallDuration)
-      .then(() => res.json(true))
+    CallsService.changeStatus(CallSid, CallStatus, CallDuration).then(() =>
+      res.json(true)
+    );
   }
 }
 export default new Controller();

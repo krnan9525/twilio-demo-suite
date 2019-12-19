@@ -1,14 +1,17 @@
-const webPush = require('web-push');
+import webPush from 'web-push';
 
 export interface ISubscription {
-  endpoint: string,
+  endpoint: string;
   keys: {
-    p256dh: string,
-    auth: string
-  }
+    p256dh: string;
+    auth: string;
+  };
 }
 
-export default function sendNotification(pushSubscription: ISubscription, payload: string) {
+export default function sendNotification(
+  pushSubscription: ISubscription,
+  payload: string
+): void {
   // TODO: extract this
   const vapidKeys = {
     publicKey:
