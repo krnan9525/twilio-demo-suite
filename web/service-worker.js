@@ -1,6 +1,23 @@
 // add push listener for web worker
 // this will not work in development environment
 
+// use Workbox for asset caching
+workbox.core.setCacheNameDetails({ prefix: 'call-router-web' });
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+/**
+ * The workboxSW.precacheAndRoute() method efficiently caches and responds to
+ * requests for URLs in the manifest.
+ * See https://goo.gl/S9QRab
+ */
+self.__precacheManifest = [].concat(self.__precacheManifest || []);
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+
 self.addEventListener('push', function(event) {
   if (event.data) {
     console.log('Push event!! ', event.data.text());
