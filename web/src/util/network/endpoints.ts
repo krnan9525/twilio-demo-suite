@@ -9,7 +9,7 @@ export class Endpoints {
     get: '/api/v1/users/allLocalNumbers'
   };
 
-  call = {
+  calls = {
     post: '/api/v1/calls',
     get: '/api/v1/calls'
   };
