@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import AccountDetailHeader from '@/components/HomeHeader';
-import AccountDetailForm from '@/components/AccountDetailForm';
-import CallRouterInputForm from '@/components/CallRouterInputForm';
+import AccountDetailHeader from '@/components/Home/HomeHeader';
+import AccountDetailForm from '@/components/Home/AccountDetailForm';
+import CallRouterInputForm from '@/components/Home/CallRouterInputForm';
 import validator from '@/util/validator';
 
 export default {
