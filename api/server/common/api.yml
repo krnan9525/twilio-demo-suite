@@ -33,7 +33,7 @@ paths:
         - Numbers
       responses:
         200:
-          description: Returning all calls in process
+          description: Returning all call logs with pagination
           content: {}
     post:
       tags:

@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+// import CallLogs from '../views/CallLogs.vue';
 
 Vue.use(VueRouter);
 
@@ -11,7 +12,7 @@ const routes = [
     component: Home
   },
   {
-    path: '#call-logs',
+    path: '/call-logs',
     name: 'call logs',
     component: () =>
       import(/* webpackChunkName: "call-logs" */ '../views/CallLogs.vue')
@@ -20,7 +21,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 });
