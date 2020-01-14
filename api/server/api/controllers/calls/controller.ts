@@ -4,12 +4,16 @@ import { ISubscription } from '../../../common/util/push';
 
 export class Controller {
   /**
-   * @description get all calls in process
+   * @description get all call logs
    * @param req
    * @param res
+   * @param next
    */
-  getCalls(req: Request, res: Response): void {
-    CallsService.getCalls().then(r => res.json(r));
+  getCalls(req: Request, res: Response, next: NextFunction): void {
+    const { accountSid, accessToken, pageToken } = req.query;
+    CallsService.getCalls({ accountSid, accessToken }, pageToken)
+      .then(r => res.json(r))
+      .catch(next);
   }
 
   /**

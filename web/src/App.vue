@@ -14,10 +14,10 @@
               <md-tab
                 id="call-logs"
                 md-label="Call Logs"
-                to="#call-logs"
+                to="call-logs"
                 exact
               />
-              <md-tab id="about" md-label="About" to="#about" />
+              <md-tab id="about" md-label="About" to="about" />
             </md-tabs>
           </div>
         </md-app-toolbar>

@@ -1,9 +1,34 @@
 import twilio from 'twilio';
 import Redis from '../../common/util/redisHelper';
 import Push, { ISubscription } from '../../common/util/push';
+import { hostUrl } from '../consts';
+import {
+  CallInstance,
+  CallPage,
+  CallStatus as TwilioCallStatus
+} from 'twilio/lib/rest/api/v2010/account/call';
+import {extractPageToken} from "../../common/util/urlHelper"
 
 interface ICall {
   sid: string;
+  callerName: string;
+  dateCreated: Date;
+  direction: string;
+  duration: string;
+  endTime: Date;
+  startTime: Date;
+  status: TwilioCallStatus;
+  to: string;
+  toFormatted: string;
+  uri: string;
+  cost: null | number;
+  costUnit: string;
+}
+
+interface IGetCallResponse {
+  previousPageToken: string | null;
+  nextPageToken: string | null;
+  calls: ICall;
 }
 
 interface ICreateCallResponse {
@@ -13,14 +38,43 @@ interface ICreateCallResponse {
 export enum CallStatus {
   COMPLETED = 'completed',
   NO_ANSWER = 'no-answer',
-  CANCELLED = 'canceled'
+  CANCELLED = 'cancelled',
+  FAILED = 'failed',
+  BUSY = 'busy'
 }
 
 export class CallsService {
-  getCalls(): Promise<ICall[]> {
+  getCalls(
+    { accountSid, accessToken },
+    pageToken: undefined
+  ): Promise<IGetCallResponse> {
+    const client = twilio(accountSid, accessToken);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return new Promise<ICall[]>((resolve, reject) => {
-      resolve([]);
+    return new Promise<IGetCallResponse>((resolve, reject) => {
+      return client.calls
+        .page({ pageToken, pageSize: 10 })
+        .then((res: CallPage) => {
+          resolve({
+            previousPageToken: extractPageToken(res.getPreviousPageUrl()),
+            nextPageToken: extractPageToken(res.getNextPageUrl()),
+            calls: res.toJSON().instances.map(call => ({
+              sid: call.sid,
+              callerName: call.callerName,
+              dateCreated: call.dateCreated,
+              direction: call.direction,
+              duration: call.duration,
+              endTime: call.endTime,
+              startTime: call.startTime,
+              status: call.status,
+              to: call.to,
+              toFormatted: call.toFormatted,
+              uri: call.uri,
+              cost: call.price,
+              costUnit: call.priceUnit || 'USD'
+            }))
+          });
+        })
+        .catch(e => reject(e));
     });
   }
 
@@ -45,11 +99,14 @@ export class CallsService {
           twiml: voiceResponse.toString(),
           from: twilioNumber,
           to: hostNumber,
-          statusCallback:
-            process.env.NODE_ENV === 'production'
-              ? 'https://calls.api.marknanyang.com/api/v1/calls/status-changed'
-              : 'https://1b98a9bc.ngrok.io/api/v1/calls/status-changed',
-          statusCallbackEvent: ['completed', 'no-answer', 'canceled'],
+          statusCallback: hostUrl + 'api/v1/calls/status-changed',
+          statusCallbackEvent: [
+            'completed',
+            'no-answer',
+            'cancelled',
+            'failed',
+            'busy'
+          ],
           statusCallbackMethod: 'POST'
         })
         .then(call => {
