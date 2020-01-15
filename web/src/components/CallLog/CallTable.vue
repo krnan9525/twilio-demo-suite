@@ -1,7 +1,10 @@
 <template>
   <div>
+    <div class="header-component">
+      <span class="table-header md-title">Your call logs</span>
+    </div>
     <md-table>
-      <md-table-row>
+      <!--<md-table-row>
         <md-table-head md-numeric>ID</md-table-head>
         <md-table-head>Name</md-table-head>
         <md-table-head>Email</md-table-head>
@@ -15,21 +18,22 @@
         <md-table-cell>sdubbin0@geocities.com</md-table-cell>
         <md-table-cell>Male</md-table-cell>
         <md-table-cell>Assistant Media Planner</md-table-cell>
-      </md-table-row>
+      </md-table-row>-->
     </md-table>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'call-table',
-  components: {
-    'md-table': () =>
-      import(
-        /* webpackChunkName: "vue-md-table" */ 'vue-material/dist/components/MdTable'
-      )
-  }
+  name: 'call-table'
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.header-component {
+  text-align: left;
+}
+.table-header {
+  color: $primary-colour;
+}
+</style>

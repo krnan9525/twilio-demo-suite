@@ -1,4 +1,5 @@
 const manifestJSON = require('./public/manifest.json');
+const path = require('path');
 module.exports = {
   pwa: {
     themeColor: manifestJSON.theme_color,
@@ -9,6 +10,13 @@ module.exports = {
     workboxPluginMode: 'InjectManifest',
     workboxOptions: {
       swSrc: 'service-worker.js'
+    }
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: `@import "@/common/_globals.scss";`
+      }
     }
   }
 };
