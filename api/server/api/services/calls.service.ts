@@ -7,11 +7,13 @@ import {
   CallPage,
   CallStatus as TwilioCallStatus
 } from 'twilio/lib/rest/api/v2010/account/call';
-import {extractPageToken} from "../../common/util/urlHelper"
+import { extractPageToken } from '../../common/util/urlHelper';
 
 interface ICall {
   sid: string;
-  callerName: string;
+  from: string;
+  fromFormatted: string;
+  parentCallSid: string | null;
   dateCreated: Date;
   direction: string;
   duration: string;
@@ -59,7 +61,9 @@ export class CallsService {
             nextPageToken: extractPageToken(res.getNextPageUrl()),
             calls: res.toJSON().instances.map(call => ({
               sid: call.sid,
-              callerName: call.callerName,
+              from: call.from,
+              parentCallSid: call.parentCallSid,
+              fromFormatted: call.fromFormatted,
               dateCreated: call.dateCreated,
               direction: call.direction,
               duration: call.duration,
