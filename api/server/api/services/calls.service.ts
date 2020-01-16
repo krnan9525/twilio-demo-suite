@@ -10,27 +10,23 @@ import {
 import { extractPageToken } from '../../common/util/urlHelper';
 
 interface ICall {
-  sid: string;
+  startTime: string;
   from: string;
   fromFormatted: string;
-  parentCallSid: string | null;
-  dateCreated: Date;
-  direction: string;
-  duration: string;
-  endTime: Date;
-  startTime: Date;
-  status: TwilioCallStatus;
   to: string;
   toFormatted: string;
-  uri: string;
-  cost: null | number;
+  twilioNumber: string | null;
+  twilioNumberFormatted: string | null;
+  cost: string | null;
   costUnit: string;
+  sid: string;
+  duration: string;
 }
 
 interface IGetCallResponse {
   previousPageToken: string | null;
   nextPageToken: string | null;
-  calls: ICall;
+  calls: ICall[];
 }
 
 interface ICreateCallResponse {
@@ -45,37 +41,39 @@ export enum CallStatus {
   BUSY = 'busy'
 }
 
+export enum CallDirectionEnum {
+  OUTBOUND_DIAL = 'outbound-dial',
+  OUTBOUND_API = 'outbound-api',
+  INBOUND = 'inbound'
+}
+
 export class CallsService {
-  getCalls(
+  /**
+   * @description service to get call logs for this account
+   * @param accountSid
+   * @param accessToken
+   * @param pageToken
+   */
+  public getCalls(
     { accountSid, accessToken },
     pageToken: undefined
   ): Promise<IGetCallResponse> {
     const client = twilio(accountSid, accessToken);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return new Promise<IGetCallResponse>((resolve, reject) => {
+      const opts = {
+        pageSize: 40,
+        pageToken,
+        pageNumber: pageToken ? 1 : undefined
+      };
       return client.calls
-        .page({ pageToken, pageSize: 10 })
+        .page(opts)
         .then((res: CallPage) => {
+          const formattedCalls = this.formatCallsForResponse(res);
           resolve({
             previousPageToken: extractPageToken(res.getPreviousPageUrl()),
             nextPageToken: extractPageToken(res.getNextPageUrl()),
-            calls: res.toJSON().instances.map(call => ({
-              sid: call.sid,
-              from: call.from,
-              parentCallSid: call.parentCallSid,
-              fromFormatted: call.fromFormatted,
-              dateCreated: call.dateCreated,
-              direction: call.direction,
-              duration: call.duration,
-              endTime: call.endTime,
-              startTime: call.startTime,
-              status: call.status,
-              to: call.to,
-              toFormatted: call.toFormatted,
-              uri: call.uri,
-              cost: call.price,
-              costUnit: call.priceUnit || 'USD'
-            }))
+            calls: formattedCalls
           });
         })
         .catch(e => reject(e));
@@ -85,7 +83,7 @@ export class CallsService {
   /**
    * @description service logic for connecting and forwarding calls
    */
-  createNewCall(
+  public createNewCall(
     { accountSid, accessToken, connectNumber, hostNumber, twilioNumber },
     subscription: ISubscription
   ): Promise<ICreateCallResponse> {
@@ -130,7 +128,7 @@ export class CallsService {
    * @param status
    * @param duration
    */
-  changeStatus(
+  public changeStatus(
     callSid: string,
     status: CallStatus,
     duration: string | number
@@ -160,6 +158,40 @@ export class CallsService {
         })
         .catch(e => reject(e));
     });
+  }
+
+  /**
+   * @description helper function -- format call instances for API return
+   * @param res
+   */
+  private formatCallsForResponse(res: CallPage): ICall[] {
+    const calls = res.toJSON().instances as CallInstance[];
+    return calls
+      .filter(call => call.direction === CallDirectionEnum.OUTBOUND_API)
+      .map(
+        (call: CallInstance): ICall => {
+          const spawnedCall = calls.find(
+            callToFind =>
+              callToFind.parentCallSid === call.sid &&
+              callToFind.direction === CallDirectionEnum.OUTBOUND_DIAL
+          );
+          return {
+            cost: call.price ? String(Math.abs(Number(call.price))) : null,
+            costUnit: call.priceUnit,
+            duration: call.duration,
+            twilioNumber: spawnedCall ? call.from : null,
+            twilioNumberFormatted: spawnedCall ? call.fromFormatted : null,
+            from: spawnedCall ? call.to : call.from,
+            fromFormatted: spawnedCall ? call.toFormatted : call.fromFormatted,
+            sid: call.sid,
+            startTime: call.startTime.toISOString(),
+            to: spawnedCall ? spawnedCall.to : call.to,
+            toFormatted: spawnedCall
+              ? spawnedCall.toFormatted
+              : call.toFormatted
+          };
+        }
+      );
   }
 }
 

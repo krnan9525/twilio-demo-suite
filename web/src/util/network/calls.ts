@@ -21,6 +21,7 @@ export interface ICall {
 export interface ICallLogRequest {
   accountSid: string;
   accessToken: string;
+  pageToken: string;
 }
 
 export class Numbers {

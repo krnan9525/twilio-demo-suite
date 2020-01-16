@@ -73,7 +73,7 @@
 <script>
 import numbers from '@/util/network/numbers';
 import pushSubscriber from '@/util/pushSubscriber';
-import calls from '@/util/network/calls';
+import callsClient from '@/util/network/calls';
 
 export default {
   name: 'CallRouterInputForm',
@@ -127,7 +127,7 @@ export default {
     call() {
       pushSubscriber.getSubscriber().then(res => {
         this.callButtonDisabled = true;
-        calls
+        callsClient
           .forwardCall({
             clientInfo: {
               endpoint: res.endpoint,
