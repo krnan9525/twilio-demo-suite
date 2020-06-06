@@ -26,9 +26,9 @@
             />
           </md-field>
           <full-page-reveal-button
-            :transition="550"
+            :transition="400"
             @click="onSaveClicked"
-            ease-in
+            :ease-in="false"
           />
         </div>
       </md-card-content>
