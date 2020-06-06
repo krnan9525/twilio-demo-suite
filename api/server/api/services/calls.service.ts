@@ -59,7 +59,6 @@ export class CallsService {
     pageToken: undefined
   ): Promise<IGetCallResponse> {
     const client = twilio(accountSid, accessToken);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return new Promise<IGetCallResponse>((resolve, reject) => {
       const opts = {
         pageSize: 40,
@@ -150,7 +149,7 @@ export class CallsService {
               break;
             default:
               payload =
-                'Your call status is changed but we cannot get it current state.';
+                'Your call status is changed but we cannot get its current state.';
           }
 
           Push(subscription, payload);

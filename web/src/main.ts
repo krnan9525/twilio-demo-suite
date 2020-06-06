@@ -16,11 +16,12 @@ import {
   MdMenu,
   MdList,
   MdSnackbar,
-  MdTable
+  MdTable,
+  MdIcon
   // @ts-ignore
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
-import 'vue-material/dist/theme/default.css';
+import './common/materialTheme.scss';
 import VueGtag from 'vue-gtag';
 
 Vue.use(MdButton);
@@ -35,7 +36,9 @@ Vue.use(MdMenu);
 Vue.use(MdList);
 Vue.use(MdSnackbar);
 Vue.use(MdTable);
+Vue.use(MdIcon);
 
+// GA configurations
 Vue.use(VueGtag, {
   config: { id: 'UA-78619837-4' }
 });

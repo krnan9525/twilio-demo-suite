@@ -12,7 +12,7 @@
       class="md-primary page-button last-page"
       @click="switchPage(previousPageToken)"
     >
-      Last Page
+      Previous Page
     </md-button>
   </div>
 </template>

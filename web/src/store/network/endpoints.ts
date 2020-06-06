@@ -13,6 +13,10 @@ export class Endpoints {
     post: '/api/v1/calls',
     get: '/api/v1/calls'
   };
+
+  login = {
+    post: '/api/v1/login'
+  };
 }
 
 export default new Endpoints();
