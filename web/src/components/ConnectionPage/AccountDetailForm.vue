@@ -26,7 +26,7 @@
             />
           </md-field>
           <full-page-reveal-button
-            :transition="250"
+            :transition="550"
             @click="onSaveClicked"
             ease-in
           />
