@@ -40,7 +40,7 @@
       height: 100vh;
       left: 0;
       bottom: 0;
-      opacity: 100%;
+      opacity: 100;
     }
   }
 }

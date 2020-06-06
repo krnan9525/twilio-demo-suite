@@ -18,4 +18,13 @@ module.exports = {
       }
     }
   }
+  // Use this to split chunk
+  // configureWebpack: {
+  //   optimization: {
+  //     splitChunks: {
+  //       minSize: 10000,
+  //       maxSize: 200000
+  //     }
+  //   }
+  // }
 };
