@@ -10,6 +10,7 @@ export interface AuthInterface {
 
 export interface SharedStateInterface {
   isConnected: boolean;
+  // loadingAuth only used on the first screen loading when account SID and auth token are set
   loadingAuth: boolean;
   auth: AuthInterface;
 }
@@ -55,7 +56,8 @@ export const mutations: MutationTree<SharedStateInterface> = {
 // actions
 
 export const ACTION_TYPES = {
-  AUTHENTICATE: 'AUTHENTICATE'
+  AUTHENTICATE: 'AUTHENTICATE',
+  AUTHENTICATE_WITH_ANIMATION: 'AUTHENTICATE_WITH_ANIMATION'
 };
 
 export const actions: ActionTree<SharedStateInterface, any> = {
@@ -63,14 +65,31 @@ export const actions: ActionTree<SharedStateInterface, any> = {
     { commit },
     { accountSid, accessToken }: AuthInterface
   ) => {
-    commit(MUTATION_TYPES.SET_LOADING_AUTH, true);
-    Login.auth(accountSid, accessToken)
+    return Login.auth(accountSid, accessToken)
       .then(() => {
         commit(MUTATION_TYPES.SET_AUTH, { accountSid, accessToken });
         commit(MUTATION_TYPES.SET_CONNECTED, true);
       })
       .catch(() => {
         commit(MUTATION_TYPES.SET_CONNECTED, false);
+        throw new Error('wrong detail');
+      });
+  },
+  // this function resolves mutations so it can be committed after animations
+  [ACTION_TYPES.AUTHENTICATE_WITH_ANIMATION]: async (
+    { commit },
+    { accountSid, accessToken }: AuthInterface
+  ) => {
+    return Login.auth(accountSid, accessToken)
+      .then(() => {
+        return () => {
+          commit(MUTATION_TYPES.SET_AUTH, { accountSid, accessToken });
+          commit(MUTATION_TYPES.SET_CONNECTED, true);
+        };
+      })
+      .catch(() => {
+        commit(MUTATION_TYPES.SET_CONNECTED, false);
+        throw new Error('wrong detail');
       });
   }
 };

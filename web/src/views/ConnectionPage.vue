@@ -4,7 +4,7 @@
     <AccountDetailForm
       :access-token="accessToken"
       :account-sid="accountSid"
-      :save-account-details="saveAccountDetails"
+      @save="saveAccountDetails"
       @update="formUpdated"
     />
     <md-snackbar
@@ -42,22 +42,23 @@ export default {
     };
   },
   methods: {
-    ...mapActions([ACTION_TYPES.AUTHENTICATE]),
+    ...mapActions([ACTION_TYPES.AUTHENTICATE_WITH_ANIMATION]),
     formUpdated({ accountSid, accessToken }) {
       this.accountSid = accountSid;
       this.accessToken = accessToken;
     },
-    saveAccountDetails() {
+    saveAccountDetails(callback) {
       if (validator.sidValidator(this.accountSid)) {
         const authObj = {
           [LocalStorageEnums.SID]: this.accountSid,
           [LocalStorageEnums.TOKEN]: this.accessToken
         };
-        this[ACTION_TYPES.AUTHENTICATE](authObj)
-          .then(() => {
+        this[ACTION_TYPES.AUTHENTICATE_WITH_ANIMATION](authObj)
+          .then(fn => {
+            callback(fn);
             saveCredentialToLocalStorage(authObj);
           })
-          .then(err => {
+          .catch(err => {
             this.snackbarMessage =
               'Account sid or token is incorrect. Please try again';
             this.showSnackbar = true;

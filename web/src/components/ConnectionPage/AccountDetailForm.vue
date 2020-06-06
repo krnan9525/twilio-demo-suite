@@ -8,7 +8,6 @@
         <div>
           <md-field>
             <label for="account-sid">Account Sid</label>
-            <!--              TODO: add validator             -->
             <md-input
               name="accountSid"
               id="account-sid"
@@ -18,7 +17,6 @@
           </md-field>
           <md-field>
             <label for="auth-token">Auth Token</label>
-            <!--              TODO: add validator             -->
             <md-input
               name="accessToken"
               id="auth-token"
@@ -27,27 +25,51 @@
               @input="update()"
             />
           </md-field>
-          <md-button class="md-raised md-primary" @click="saveAccountDetails">
-            Save
-          </md-button>
+          <full-page-reveal-button
+            :transition="250"
+            @click="onSaveClicked"
+            ease-in
+          />
         </div>
       </md-card-content>
     </md-card>
   </form>
 </template>
+
+<style lang="scss" scoped>
+.md-layout-item {
+}
+
+.input-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+</style>
+
 <script>
+import FullPageRevealButton from '@/components/Common/FullPageRevealButton';
+
 export default {
   name: 'AccountDetailForm',
+  components: { FullPageRevealButton },
   data() {
     return {
       accessTokenCp: null,
-      accountSidCp: null
+      accountSidCp: null,
+      transitionStage: 0
     };
   },
   props: {
-    accessToken: {},
-    accountSid: {},
-    saveAccountDetails: {}
+    accessToken: {
+      type: String,
+      default: ''
+    },
+    accountSid: {
+      type: String,
+      default: ''
+    },
+    saveAccountDetails: () => {}
   },
   methods: {
     update() {
@@ -55,6 +77,9 @@ export default {
         accountSid: this.accountSidCp,
         accessToken: this.accessTokenCp
       });
+    },
+    onSaveClicked(callback) {
+      this.$emit('save', callback);
     }
   },
   watch: {
@@ -67,13 +92,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.md-layout-item {
-}
-
-.input-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-</style>
