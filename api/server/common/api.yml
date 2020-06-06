@@ -69,6 +69,22 @@ paths:
         200:
           description: Returning all local numbers belongs to this user
           content: {}
+  /login:
+    post:
+      tags:
+        - Login
+      requestBody:
+        description: auth request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginAuthPostBody'
+      responses:
+        204:
+          description: success
+        403:
+          description: forbidden
 components:
   schemas:
     allActiveNumbers:
@@ -77,6 +93,16 @@ components:
       - accountSid
       - accessToken
       type: object
+      properties:
+        accountSid:
+          type: string
+        accessToken:
+          type: string
+    loginAuthPostBody:
+      title: authBody
+      required:
+      - accountSid
+      - accessToken
       properties:
         accountSid:
           type: string

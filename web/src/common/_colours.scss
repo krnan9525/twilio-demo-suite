@@ -1,5 +1,14 @@
 // reference to Twilio's branding site for global colour schemes:
 // https://www.twilio.com/company/brand
-$primary-colour: #F22F46;
-$primary-colour-blue: #0D122B;
-$primary-colour-white: #fff;
+// added materialpalette.com/red/green
+$__primary-colour:            #F44336;
+$__primary-colour-dark:       #D32F2F;
+$__primary-colour-light:      #FFCDD2;
+$__primary-colour-text:       #FFFFFF;
+$__primary-text-color:        #212121;
+$__accent-colour:             #4CAF50;
+$__secondary-text-colour:     #757575;
+$__divider-colour:            #BDBDBD;
+
+$__colour-blue:               #0D122B;
+$__colour-blue-accent:        rgba(13, 18, 43, 0.71);

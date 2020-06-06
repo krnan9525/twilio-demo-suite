@@ -6,9 +6,13 @@
           <div class="md-toolbar-row">
             <div class="md-toolbar-section-start">
               <span class="md-title">Call Forwarder</span>
+              <auth-connection-indicator
+                v-if="isConnected"
+                class="connection-indicator"
+              />
             </div>
           </div>
-          <div class="md-toolbar-row">
+          <div v-if="isConnected" class="md-toolbar-row">
             <md-tabs class="md-primary" md-sync-route md-swipeable>
               <md-tab id="tab-home" md-label="Call Forwarding" to="/" exact />
               <md-tab
@@ -22,7 +26,9 @@
           </div>
         </md-app-toolbar>
         <md-app-content>
-          <router-view />
+          <h2 v-if="loadingAuth">Loading</h2>
+          <router-view v-else-if="isConnected" />
+          <ConnectionPage v-else />
         </md-app-content>
       </md-app>
     </div>
@@ -37,4 +43,30 @@
   text-align: center;
   color: #2c3e50;
 }
+
+.md-toolbar-section-start {
+  justify-content: space-between;
+}
 </style>
+
+<script>
+import { mapActions, mapState } from 'vuex';
+import { ACTION_TYPES } from '@/store/sharedState';
+import { getCredentialFromLocalStorage } from '@/util/localStorage';
+import AuthConnectionIndicator from '@/components/Common/AuthConnectionIndicator';
+import ConnectionPage from '@/views/ConnectionPage';
+
+export default {
+  name: 'app',
+  components: { ConnectionPage, AuthConnectionIndicator },
+  methods: {
+    ...mapActions([ACTION_TYPES.AUTHENTICATE])
+  },
+  computed: {
+    ...mapState(['isConnected', 'loadingAuth'])
+  },
+  mounted() {
+    this[ACTION_TYPES.AUTHENTICATE](getCredentialFromLocalStorage());
+  }
+};
+</script>

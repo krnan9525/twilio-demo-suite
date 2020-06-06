@@ -1,5 +1,4 @@
 const manifestJSON = require('./public/manifest.json');
-const path = require('path');
 module.exports = {
   pwa: {
     themeColor: manifestJSON.theme_color,

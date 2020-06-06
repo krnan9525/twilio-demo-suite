@@ -71,9 +71,9 @@
 </template>
 
 <script>
-import numbers from '@/util/network/numbers';
+import numbers from '@/store/network/numbers';
 import pushSubscriber from '@/util/pushSubscriber';
-import callsClient from '@/util/network/calls';
+import callsClient from '@/store/network/calls';
 
 export default {
   name: 'CallRouterInputForm',

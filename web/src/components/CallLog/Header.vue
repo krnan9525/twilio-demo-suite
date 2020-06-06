@@ -9,6 +9,6 @@
 
 <style lang="scss" scoped>
 .header-text {
-  color: $primary-colour-blue;
+  color: $__colour-blue;
 }
 </style>

@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import callsClient from '@/util/network/calls';
+import callsClient from '@/store/network/calls';
 import PaginationControl from '@/components/Common/PaginationControl';
 
 export default {
@@ -89,6 +89,6 @@ export default {
   text-align: left;
 }
 .table-header {
-  color: $primary-colour;
+  color: $__primary-colour;
 }
 </style>

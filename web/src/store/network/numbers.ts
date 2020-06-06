@@ -1,5 +1,5 @@
 import axios from 'axios';
-import endpoints from '@/util/network/endpoints';
+import endpoints from '@/store/network/endpoints';
 import validator from '@/util/validator';
 
 export class Numbers {
