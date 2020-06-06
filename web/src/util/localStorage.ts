@@ -16,3 +16,7 @@ export const saveCredentialToLocalStorage = (obj: AuthInterface) => {
   localStorage.setItem(LocalStorageEnums.SID, accountSid);
   localStorage.setItem(LocalStorageEnums.TOKEN, accessToken);
 };
+
+export const clearStorage = () => {
+  localStorage.clear();
+};

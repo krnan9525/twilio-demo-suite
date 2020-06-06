@@ -3,8 +3,8 @@
     <div class="call-router-input-container">
       <CallRouterInputForm
         ref="callInputForm"
-        :access-token="accessToken"
-        :account-sid="accountSid"
+        :access-token="auth.accessToken"
+        :account-sid="auth.accountSid"
       />
     </div>
     <md-snackbar
@@ -23,25 +23,19 @@
 
 <script>
 import CallRouterInputForm from '@/components/Home/CallRouterInputForm';
+import { mapState } from 'vuex';
 
 export default {
   name: 'home',
   components: { CallRouterInputForm },
+  computed: {
+    ...mapState(['auth'])
+  },
   data() {
     return {
-      accountSid: null,
-      accessToken: null,
       snackbarMessage: '',
       showSnackbar: false
     };
-  },
-  mounted: function() {
-    const accountSid = localStorage.getItem('accountSid');
-    const accessToken = localStorage.getItem('accessToken');
-    if (accountSid && accessToken) {
-      this.accountSid = accountSid;
-      this.accessToken = accessToken;
-    }
   }
 };
 </script>

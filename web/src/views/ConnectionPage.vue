@@ -53,9 +53,15 @@ export default {
           [LocalStorageEnums.SID]: this.accountSid,
           [LocalStorageEnums.TOKEN]: this.accessToken
         };
-        this[ACTION_TYPES.AUTHENTICATE](authObj).then(() => {
-          saveCredentialToLocalStorage(authObj);
-        });
+        this[ACTION_TYPES.AUTHENTICATE](authObj)
+          .then(() => {
+            saveCredentialToLocalStorage(authObj);
+          })
+          .then(err => {
+            this.snackbarMessage =
+              'Account sid or token is incorrect. Please try again';
+            this.showSnackbar = true;
+          });
       } else {
         this.snackbarMessage =
           'The account Sid or auth token format is incorrect. Please try again.';

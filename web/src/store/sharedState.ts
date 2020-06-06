@@ -28,7 +28,8 @@ export const initState: SharedStateInterface = {
 export const MUTATION_TYPES = {
   SET_AUTH: 'SET_AUTH',
   SET_CONNECTED: 'SET_CONNECTED',
-  SET_LOADING_AUTH: 'SET_LOADING_AUTH'
+  SET_LOADING_AUTH: 'SET_LOADING_AUTH',
+  CLEAR_AUTH: 'CLEAR_AUTH'
 };
 
 export const mutations: MutationTree<SharedStateInterface> = {
@@ -44,6 +45,10 @@ export const mutations: MutationTree<SharedStateInterface> = {
     data: boolean
   ) {
     state.loadingAuth = data;
+  },
+  [MUTATION_TYPES.CLEAR_AUTH](state: SharedStateInterface) {
+    state.isConnected = false;
+    state.auth = initState.auth;
   }
 };
 
