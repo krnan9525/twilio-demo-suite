@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import installValidator from './openapi';
 import cors from 'cors';
 import l from './logger';
+import morgan from 'morgan';
 
 const app = express();
 
@@ -26,6 +27,9 @@ export default class ExpressServer {
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(express.static(`${root}/public`));
     app.use(cors());
+    app.use(
+      morgan(':method :url :status :res[content-length] - :response-time ms')
+    );
   }
 
   router(routes: (app: Application) => void): ExpressServer {
