@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="page-container">
-      <md-app md-waterfall md-mode="fixed-last">
+      <md-app id="md-app-container" md-waterfall md-mode="fixed-last">
         <md-app-toolbar class="md-large md-dense md-primary">
           <div class="md-toolbar-row">
             <div class="md-toolbar-section-start">
@@ -25,7 +25,7 @@
             </md-tabs>
           </div>
         </md-app-toolbar>
-        <md-app-content>
+        <md-app-content class="content-container">
           <h2 v-if="loadingAuth">Loading</h2>
           <router-view v-else-if="isConnected" />
           <ConnectionPage v-else />
@@ -46,6 +46,10 @@
 
 .md-toolbar-section-start {
   justify-content: space-between;
+}
+
+#md-app-container {
+  min-height: 100vh;
 }
 </style>
 
