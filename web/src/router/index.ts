@@ -14,6 +14,11 @@ const routes = [
     name: 'call logs',
     component: () =>
       import(/* webpackChunkName: "call-logs" */ '../views/CallLogs.vue')
+  },
+  {
+    path: '/sms',
+    name: 'sms',
+    component: () => import(/* webpackChunkName: "sms" */ '../views/Sms.vue')
   }
 ];
 

@@ -21,11 +21,12 @@
                 to="call-logs"
                 exact
               />
-              <md-tab id="about" md-label="About" to="about" />
+              <md-tab id="tab-sms" md-label="SMS" to="sms" exact />
+              <md-tab id="tab-about" md-label="About" to="about" />
             </md-tabs>
           </div>
         </md-app-toolbar>
-        <md-app-content class="content-container">
+        <md-app-content class="__m-t-3">
           <h2 v-if="loadingAuth">Loading</h2>
           <router-view v-else-if="isConnected" />
           <ConnectionPage v-else />
