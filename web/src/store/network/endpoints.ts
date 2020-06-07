@@ -17,6 +17,10 @@ export class Endpoints {
   login = {
     post: '/api/v1/login'
   };
+
+  smsMessagesForNumber = {
+    get: '/api/v1/sms/message'
+  };
 }
 
 export default new Endpoints();

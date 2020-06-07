@@ -7,6 +7,7 @@ export interface NumberInterface {
 
 export interface NumberStateInterface {
   availableNumbers: NumberInterface[];
+  activeNumber?: string;
   loadingNumbers: boolean;
 }
 
