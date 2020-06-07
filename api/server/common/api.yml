@@ -31,6 +31,10 @@ paths:
     get:
       tags:
         - Numbers
+      parameters:
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/authTokenParam'
+        - $ref: '#/components/parameters/pageTokenParam'
       responses:
         200:
           description: Returning all call logs with pagination
@@ -50,21 +54,54 @@ paths:
         200:
           description: call status is changed for this incoming call
           content: {}
+  /sms/message:
+    get:
+      summary: Returning all sms history with pagination
+      tags:
+        - sms
+      parameters:
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/authTokenParam'
+        - $ref: '#/components/parameters/pageTokenParam'
+      responses:
+        200:
+          description: Returned all SMS history with pagination
+          content: {}
+    post:
+      summary: create a new SMS messsage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messageCreationPostBody'
+      responses:
+        200:
+          description: Message created, returned new message
+          content: {}
+  /sms/message/{from}:
+    get:
+      summary: Returning all sms history with pagination
+      tags:
+        - sms
+      parameters:
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/authTokenParam'
+        - $ref: '#/components/parameters/fromSenderParam'
+        - $ref: '#/components/parameters/toSenderParam'
+        - $ref: '#/components/parameters/pageToken1Param'
+        - $ref: '#/components/parameters/pageToken2Param'
+      responses:
+        200:
+          description: Returned all SMS history with pagination for a specific from number
+          content: {}
   /users/allLocalNumbers:
     get:
       tags:
         - Users
       parameters:
-        - in: query
-          name: accountSid
-          schema:
-            type: string
-          required: true
-        - in: query
-          name: accessToken
-          schema:
-            type: string
-          required: true
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/authTokenParam'
       responses:
         200:
           description: Returning all local numbers belongs to this user
@@ -86,18 +123,50 @@ paths:
         403:
           description: forbidden
 components:
+  parameters:
+    authTokenParam:
+      in: query
+      name: accessToken
+      schema:
+        type: string
+      required: true
+    authAccountSidParam:
+      in: query
+      name: accountSid
+      schema:
+        type: string
+      required: true
+    pageTokenParam:
+      in: query
+      name: pageToken
+      schema:
+        type: string
+      required: false
+    pageToken1Param:
+      in: query
+      name: pageToken1
+      schema:
+        type: string
+      required: false
+    pageToken2Param:
+      in: query
+      name: pageToken2
+      schema:
+        type: string
+      required: false
+    fromSenderParam:
+      in: path
+      name: from
+      schema:
+        type: string
+      required: true
+    toSenderParam:
+      in: query
+      name: to
+      schema:
+        type: string
+      required: false
   schemas:
-    allActiveNumbers:
-      title: numbers
-      required:
-      - accountSid
-      - accessToken
-      type: object
-      properties:
-        accountSid:
-          type: string
-        accessToken:
-          type: string
     loginAuthPostBody:
       title: authBody
       required:
@@ -107,4 +176,23 @@ components:
         accountSid:
           type: string
         accessToken:
+          type: string
+    messageCreationPostBody:
+      title: message creation post body
+      required:
+      - accountSid
+      - accessToken
+      - messageBody
+      - from
+      - to
+      properties:
+        accountSid:
+          type: string
+        accessToken:
+          type: string
+        messageBody:
+          type: string
+        from:
+          type: string
+        to:
           type: string

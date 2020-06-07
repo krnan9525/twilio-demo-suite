@@ -4,3 +4,4 @@ export const hostUrl =
     : 'https://1b98a9bc.ngrok.io/';
 
 export const publicApiEndpoint = 'https://accounts.twilio.com/v1/';
+export const publicTwilioEndpoint2010 = 'https://api.twilio.com/2010-04-01/';
