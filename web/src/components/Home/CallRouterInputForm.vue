@@ -129,11 +129,13 @@ export default {
         this.callButtonDisabled = true;
         callsClient
           .forwardCall({
-            clientInfo: {
-              endpoint: res.endpoint,
-              auth: res.keys.auth,
-              p256dh: res.keys.p256dh
-            },
+            clientInfo: res
+              ? {
+                  endpoint: res.endpoint,
+                  auth: res.keys.auth,
+                  p256dh: res.keys.p256dh
+                }
+              : null,
             accessToken: this.accessToken,
             accountSid: this.accountSid,
             connectNumber: this.connectNumber,

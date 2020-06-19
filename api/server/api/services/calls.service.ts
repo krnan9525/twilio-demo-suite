@@ -111,11 +111,13 @@ export class CallsService {
           statusCallbackMethod: 'POST'
         })
         .then(call => {
-          // TODO: reform this
-          // L.debug(call);
-          Redis.set(call.sid, JSON.stringify(subscription)).then(() =>
-            resolve(call)
-          );
+          if (subscription) {
+            Redis.set(call.sid, JSON.stringify(subscription)).then(() =>
+              resolve(call)
+            );
+          } else {
+            resolve(call);
+          }
         })
         .catch(e => reject(e));
     });
