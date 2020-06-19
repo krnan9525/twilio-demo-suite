@@ -32,7 +32,7 @@ const getters: GetterTree<MessagesStateInterface, any> = {
     const uniqueNumbers: string[] =
       thisGetters[MESSAGE_GETTER_TYPES.UNIQUE_NUMBERS];
     return messages.reduce((prev: MappedMessagesInterface, curr) => {
-      let foundNumber = null;
+      let foundNumber;
       if (uniqueNumbers.indexOf(curr.from) >= 0) {
         foundNumber = curr.from;
       } else {

@@ -31,13 +31,15 @@ export class Controller {
       twilioNumber,
       clientInfo
     } = req.body;
-    const subscription: ISubscription = {
-      endpoint: clientInfo.endpoint,
-      keys: {
-        p256dh: clientInfo.p256dh,
-        auth: clientInfo.auth
-      }
-    };
+    const subscription: ISubscription = clientInfo
+      ? {
+          endpoint: clientInfo.endpoint,
+          keys: {
+            p256dh: clientInfo.p256dh,
+            auth: clientInfo.auth
+          }
+        }
+      : null;
     CallsService.createNewCall(
       { accountSid, accessToken, connectNumber, hostNumber, twilioNumber },
       subscription

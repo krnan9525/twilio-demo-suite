@@ -7,7 +7,7 @@
     <md-button
       class="md-raised md-accent"
       id="logout-btn"
-      @click="toggleDialog"
+      @click="toggleDialog()"
     >
       Log Out
     </md-button>

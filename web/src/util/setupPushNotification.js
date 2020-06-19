@@ -1,9 +1,21 @@
 /* eslint-disable no-console */
 import Keys from '../const/keys';
 
-Notification.requestPermission().then(res => {
-  console.log('Notification permission status:', res);
-});
+if ('Notification' in window) {
+  try {
+    // Chrome and most of other browsers
+    Notification &&
+      Notification.requestPermission().then(res => {
+        console.log('Notification permission status:', res);
+      });
+  } catch (e) {
+    // Safari on desktop
+    Notification &&
+      Notification.requestPermission(res => {
+        console.log('Notification permission status:', res);
+      });
+  }
+}
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
