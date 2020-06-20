@@ -26,9 +26,9 @@
             </md-tabs>
           </div>
         </md-app-toolbar>
-        <md-app-content class="__m-t-3">
+        <md-app-content>
           <h2 v-if="loadingAuth">Loading</h2>
-          <router-view v-else-if="isConnected" />
+          <router-view v-else-if="isConnected" class="__p-t-3" />
           <ConnectionPage v-else />
         </md-app-content>
       </md-app>

@@ -6,10 +6,16 @@
         v-model="twilioNumber"
         :available-numbers="availableNumbers"
       />
-      <div v-for="number in uniqueNumbers" :key="number">
-        <span>{{ number }}</span>
-        <div v-for="(message, i) in mappedMessages[number]" :key="i">
-          {{ message.body }}
+    </div>
+    <div class="sms-conversations-container __m-t-2">
+      <div
+        class="conversations md-layout-item md-size-50 md-small-size-100 __default-box-shadow"
+      >
+        <div v-for="number in uniqueNumbers" :key="number">
+          <sms-conversation-card
+            :number="number"
+            :messages="mappedMessages[number]"
+          />
         </div>
       </div>
     </div>
@@ -33,6 +39,16 @@
   flex-direction: row;
   justify-content: center;
 }
+
+.sms-conversations-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.conversations {
+}
 </style>
 
 <script>
@@ -44,6 +60,7 @@ import {
   MESSAGE_GETTER_TYPES
 } from '@/store/messages/interfaces';
 import SmsTwilioNumberSelection from '@/components/Sms/SmsTwilioNumberSelection';
+import SmsConversationCard from '@/components/Sms/SmsConversationCard';
 
 const {
   mapState: numberMapState,
@@ -59,7 +76,7 @@ const {
 
 export default {
   name: 'sms',
-  components: { SmsTwilioNumberSelection },
+  components: { SmsConversationCard, SmsTwilioNumberSelection },
   computed: {
     ...numberMapState(['availableNumbers', 'loadingNumbers']),
     ...mapState(['auth']),

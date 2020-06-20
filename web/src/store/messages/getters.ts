@@ -5,6 +5,7 @@ import {
 } from './interfaces';
 import { GetterTree } from 'vuex';
 import { NumberInterface } from '@/store/numbers/interfaces';
+import moment from 'moment';
 
 const getters: GetterTree<MessagesStateInterface, any> = {
   [MESSAGE_GETTER_TYPES.UNIQUE_NUMBERS](state, thisGetters, rootState) {
@@ -31,19 +32,24 @@ const getters: GetterTree<MessagesStateInterface, any> = {
     const { messages } = state;
     const uniqueNumbers: string[] =
       thisGetters[MESSAGE_GETTER_TYPES.UNIQUE_NUMBERS];
-    return messages.reduce((prev: MappedMessagesInterface, curr) => {
-      let foundNumber;
-      if (uniqueNumbers.indexOf(curr.from) >= 0) {
-        foundNumber = curr.from;
-      } else {
-        foundNumber = curr.to;
-      }
-      if (!prev[foundNumber]) {
-        prev[foundNumber] = [];
-      }
-      prev[foundNumber].push(curr);
-      return prev;
-    }, {});
+    return messages
+      .map(message => ({
+        ...message,
+        formattedDate: moment(message.date_sent).format('L LT')
+      }))
+      .reduce((prev: MappedMessagesInterface, curr) => {
+        let foundNumber;
+        if (uniqueNumbers.indexOf(curr.from) >= 0) {
+          foundNumber = curr.from;
+        } else {
+          foundNumber = curr.to;
+        }
+        if (!prev[foundNumber]) {
+          prev[foundNumber] = [];
+        }
+        prev[foundNumber].push(curr);
+        return prev;
+      }, {});
   }
 };
 
