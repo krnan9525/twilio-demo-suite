@@ -8,7 +8,7 @@
     <md-card-content>
       <md-field>
         <label for="twilio-number">
-          Select a Twilio to fetch its message histories
+          Select a Twilio to fetch its message history
         </label>
         <md-select
           name="twilioNumber"

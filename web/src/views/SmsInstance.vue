@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="sms-instance-page __m-t-1">
+    <div class="sms-instance-page">
       <div
         class="sms-instance-container md-size-50 md-small-size-100 md-layout-item"
       >
@@ -24,6 +24,7 @@
                   name="receiver-number"
                   id="receiver-number"
                   v-model="receiverNumberInput"
+                  type="number"
                 />
               </md-field>
               <md-button class="md-raised md-primary" @click="setNumber()">
@@ -32,6 +33,7 @@
             </div>
           </div>
           <md-button
+            v-if="this.receiverNumber"
             class="md-primary refresh-btn"
             @click="refreshAllMessages()"
           >
@@ -41,13 +43,9 @@
           <div class="message-block">
             <chat-bubble :messages="this.messages" />
           </div>
-        </div>
-        <h2 v-else class="__m-t-10">Error: Please return to previous page</h2>
-        <div
-          class="send-message-bar md-size-50 md-small-size-100 md-layout-item"
-        >
           <send-message-bar @send-message="onMessageSend" />
         </div>
+        <h2 v-else class="__m-t-10">Error: Please return to previous page</h2>
       </div>
       <md-snackbar
         md-position="center"
@@ -69,7 +67,6 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  position: relative;
 }
 
 .sms-instance-container {
@@ -77,6 +74,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .messages-body-container {
@@ -106,8 +104,6 @@
 }
 
 .message-block {
-  max-height: 1200px;
-  overflow-y: auto;
   padding-bottom: 50px;
 }
 
@@ -116,17 +112,14 @@
   justify-content: center;
   align-items: center;
 }
-
-.send-message-bar {
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-}
 </style>
 
 <script>
 import { mapState, createNamespacedHelpers } from 'vuex';
-import { NUMBER_ACTION_TYPES } from '@/store/numbers/interfaces';
+import {
+  NUMBER_ACTION_TYPES,
+  NUMBER_MUTATION_TYPES
+} from '@/store/numbers/interfaces';
 import {
   MESSAGES_ACTION_TYPES,
   MESSAGES_MUTATION_TYPES,
@@ -139,7 +132,7 @@ import SendMessageBar from '@/components/SmsInstance/SendMessageBar';
 
 const {
   mapState: numberMapState,
-  mapActions: numberMapAction
+  mapMutations: numberMapMutation
 } = createNamespacedHelpers('numbers');
 
 const {
@@ -167,14 +160,19 @@ export default {
       fetchMessages: MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER,
       sendMessage: MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE
     }),
+    ...numberMapMutation({
+      changeReceiverNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER
+    }),
     onBackClicked() {
       this.$router.back();
     },
-    // TODO: finish this
-    setNumber() {},
+    setNumber() {
+      this.changeReceiverNumber(this.receiverNumberInput);
+      this.refreshAllMessages();
+    },
     refreshAllMessages() {
+      this.resetMessageState();
       if (this.twilioNumber && this.receiverNumber) {
-        this.resetMessageState();
         const params = {
           ...this.auth,
           from: this.twilioNumber,
