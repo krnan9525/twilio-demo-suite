@@ -9,6 +9,7 @@ Vue.use(Vuex);
 
 const state: MessagesStateInterface = {
   loadingMessages: false,
+  sendingMessage: false,
   nextPageTokens: {},
   messages: []
 };

@@ -25,12 +25,6 @@
   justify-content: space-around;
 }
 
-.send-btn {
-  .__text {
-    line-height: 24px;
-  }
-}
-
 .message-input-field {
   max-width: 400px;
 }
@@ -50,6 +44,7 @@ export default {
   methods: {
     onSendClicked() {
       if (this.inputMessage) {
+        this.inputMessage = '';
         this.$emit('send-message', this.inputMessage);
       }
     }
