@@ -31,6 +31,13 @@
               </md-button>
             </div>
           </div>
+          <md-button
+            class="md-primary refresh-btn"
+            @click="refreshAllMessages()"
+          >
+            <span class="__text">refresh messages </span>
+            <md-icon>refresh</md-icon>
+          </md-button>
           <div class="message-block">
             <chat-bubble :messages="this.messages" />
           </div>
@@ -81,7 +88,6 @@
   top: 0;
   align-self: flex-start;
   .__text {
-    line-height: 24px;
     @media screen and (max-width: 600px) {
       display: none;
     }
