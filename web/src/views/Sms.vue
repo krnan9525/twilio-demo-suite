@@ -17,6 +17,14 @@
             :messages="mappedMessages[number]"
           />
         </div>
+        <div v-if="twilioNumber" class="actions">
+          <md-button
+            class="md-raised md-primary"
+            @click="onNewConversationClicked()"
+          >
+            New Conversation
+          </md-button>
+        </div>
       </div>
     </div>
     <md-snackbar
@@ -93,13 +101,18 @@ export default {
   methods: {
     ...numberMapAction([NUMBER_ACTION_TYPES.FETCH_NUMBERS]),
     ...numberMapMutation({
-      changeSelectedNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_SELECTED_NUMBER
+      changeSelectedNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_SELECTED_NUMBER,
+      changeReceiverNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER
     }),
     ...messagesMapAction([MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER]),
     ...messagesMapMutation([
       MESSAGES_MUTATION_TYPES.CLEAR_MESSAGES,
       MESSAGES_MUTATION_TYPES.RESET_MESSAGE_STATE
-    ])
+    ]),
+    onNewConversationClicked() {
+      this.changeReceiverNumber('');
+      this.$router.push('sms-instance');
+    }
   },
   data() {
     return {

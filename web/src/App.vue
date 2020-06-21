@@ -14,7 +14,7 @@
           </div>
           <div v-if="isConnected" class="md-toolbar-row">
             <md-tabs class="md-primary" md-sync-route md-swipeable>
-              <md-tab id="tab-home" md-label="Call Forwarding" to="/" exact />
+              <md-tab id="tab-home" md-label="Calls" to="/" exact />
               <md-tab
                 id="call-logs"
                 md-label="Call Logs"
@@ -50,7 +50,9 @@
 }
 
 #md-app-container {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>
 
