@@ -167,6 +167,9 @@ export default {
       this.$router.back();
     },
     setNumber() {
+      if (this.receiverNumberInput.charAt(0) !== '+') {
+        this.receiverNumberInput = '+' + this.receiverNumberInput;
+      }
       this.changeReceiverNumber(this.receiverNumberInput);
       this.refreshAllMessages();
     },

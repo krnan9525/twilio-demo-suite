@@ -7,8 +7,8 @@ export interface NumberInterface {
 
 export interface NumberStateInterface {
   availableNumbers: NumberInterface[];
-  smsSelectedNumber?: string;
-  smsReceiverNumber?: string;
+  smsSelectedNumber: string;
+  smsReceiverNumber: string;
   loadingNumbers: boolean;
 }
 
