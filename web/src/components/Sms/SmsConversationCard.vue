@@ -103,6 +103,11 @@
 
 <script>
 import moment from 'moment';
+import { createNamespacedHelpers } from 'vuex';
+import { NUMBER_MUTATION_TYPES } from '@/store/numbers/interfaces';
+
+const { mapMutations: numberMapMutation } = createNamespacedHelpers('numbers');
+
 export default {
   name: 'sms-conversation-card',
   props: {
@@ -116,7 +121,13 @@ export default {
     }
   },
   methods: {
-    openConversation() {}
+    ...numberMapMutation({
+      changeReceiverNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER
+    }),
+    openConversation() {
+      this.changeReceiverNumber(this.number);
+      this.$router.push('sms-instance');
+    }
   }
 };
 </script>

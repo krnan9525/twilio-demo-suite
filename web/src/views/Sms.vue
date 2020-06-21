@@ -53,7 +53,10 @@
 
 <script>
 import { mapState, createNamespacedHelpers } from 'vuex';
-import { NUMBER_ACTION_TYPES } from '@/store/numbers/interfaces';
+import {
+  NUMBER_ACTION_TYPES,
+  NUMBER_MUTATION_TYPES
+} from '@/store/numbers/interfaces';
 import {
   MESSAGES_ACTION_TYPES,
   MESSAGES_MUTATION_TYPES,
@@ -64,7 +67,8 @@ import SmsConversationCard from '@/components/Sms/SmsConversationCard';
 
 const {
   mapState: numberMapState,
-  mapActions: numberMapAction
+  mapActions: numberMapAction,
+  mapMutations: numberMapMutation
 } = createNamespacedHelpers('numbers');
 
 const {
@@ -88,6 +92,9 @@ export default {
   },
   methods: {
     ...numberMapAction([NUMBER_ACTION_TYPES.FETCH_NUMBERS]),
+    ...numberMapMutation({
+      changeSelectedNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_SELECTED_NUMBER
+    }),
     ...messagesMapAction([MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER]),
     ...messagesMapMutation([MESSAGES_MUTATION_TYPES.CLEAR_MESSAGES])
   },
@@ -109,6 +116,7 @@ export default {
         from: newValue
       };
       this[MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER](params);
+      this.changeSelectedNumber(newValue);
     }
   }
 };
