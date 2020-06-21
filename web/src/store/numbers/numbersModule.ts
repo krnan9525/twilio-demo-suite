@@ -8,7 +8,9 @@ Vue.use(Vuex);
 
 const state: NumberStateInterface = {
   availableNumbers: [],
-  loadingNumbers: false
+  loadingNumbers: false,
+  smsSelectedNumber: '',
+  smsReceiverNumber: ''
 };
 
 const numbersModule: Module<NumberStateInterface, any> = {
