@@ -39,7 +39,7 @@
         <div
           class="send-message-bar md-size-50 md-small-size-100 md-layout-item"
         >
-          <send-message-bar />
+          <send-message-bar @send-message="onMessageSend" />
         </div>
       </div>
       <md-snackbar
@@ -158,7 +158,8 @@ export default {
       resetMessageState: MESSAGES_MUTATION_TYPES.RESET_MESSAGE_STATE
     }),
     ...messagesMapAction({
-      fetchMessages: MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER
+      fetchMessages: MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER,
+      sendMessage: MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE
     }),
     onBackClicked() {
       this.$router.back();
@@ -174,6 +175,24 @@ export default {
           to: this.receiverNumber
         };
         this.fetchMessages(params);
+      }
+    },
+    onMessageSend(msg) {
+      if (this.twilioNumber && this.receiverNumber && msg) {
+        const data = {
+          ...this.auth,
+          messageBody: msg,
+          from: this.twilioNumber,
+          to: this.receiverNumber
+        };
+        this.sendMessage(data).then(() => {
+          this.showSnackbar = true;
+          this.snackbarMessage = 'Message sent!';
+          this.refreshAllMessages();
+        });
+      } else {
+        this.showSnackbar = true;
+        this.snackbarMessage = 'Cannot send message -- some fields are missing';
       }
     }
   },

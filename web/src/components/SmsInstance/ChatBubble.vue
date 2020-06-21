@@ -13,6 +13,16 @@
         :key="j"
       >
         {{ message.body }}
+        <div class="second-line">
+          <div class="time-stamp">{{ message.formattedDate }}</div>
+          <div v-if="message.price" class="price-tooltip">
+            <md-icon id="money-icon">attach_money</md-icon>
+            <md-tooltip md-direction="bottom">
+              This message cost you: {{ Math.abs(Number(message.price)) }}
+              {{ message.price_unit }}
+            </md-tooltip>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -43,6 +53,9 @@
   background: linear-gradient($__accent-colour, $__accent-colour-dark) fixed;
   position: relative;
   text-align: start;
+  .second-line {
+    flex-direction: row;
+  }
 }
 
 .received .message.last:before {
@@ -78,6 +91,9 @@
   background: linear-gradient($__primary-colour, $__primary-colour-dark) fixed;
   position: relative;
   text-align: end;
+  .second-line {
+    flex-direction: row-reverse;
+  }
 }
 
 .sent .message.last:before {
@@ -103,9 +119,26 @@
   background: white;
   border-bottom-left-radius: 10px;
 }
+
+.second-line {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.time-stamp {
+  font-size: 10px;
+  color: $__primary-colour-text;
+}
+
+#money-icon {
+  color: $__primary-colour-text;
+  height: 5px;
+}
 </style>
 
 <script>
+import * as moment from 'moment';
+
 export default {
   name: 'chat-bubble',
   props: {
@@ -117,21 +150,31 @@ export default {
   computed: {
     // map raw message array to [{isReceived: boolean, messages: []},...], separating by message directions
     formattedThread() {
-      return this.messages.reduce((prev, curr) => {
-        const isReceived = curr.direction === 'inbound';
-        if (
-          prev.length !== 0 &&
-          isReceived === prev[prev.length - 1].isReceived
-        ) {
-          prev[prev.length - 1].messages.push(curr);
-        } else {
-          prev.push({
-            isReceived,
-            messages: [curr]
-          });
-        }
-        return prev;
-      }, []);
+      if (this.messages === null) {
+        return [];
+      }
+      return this.messages
+        .slice()
+        .sort((a, b) => (moment(a.date_sent) > moment(b.date_sent) ? 1 : -1))
+        .map(message => ({
+          ...message,
+          formattedDate: moment(message.date_sent).format('L LT')
+        }))
+        .reduce((prev, curr) => {
+          const isReceived = curr.direction === 'inbound';
+          if (
+            prev.length !== 0 &&
+            isReceived === prev[prev.length - 1].isReceived
+          ) {
+            prev[prev.length - 1].messages.push(curr);
+          } else {
+            prev.push({
+              isReceived,
+              messages: [curr]
+            });
+          }
+          return prev;
+        }, []);
     }
   }
 };
