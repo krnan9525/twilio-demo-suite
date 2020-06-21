@@ -44,8 +44,8 @@ export default {
   methods: {
     onSendClicked() {
       if (this.inputMessage) {
-        this.inputMessage = '';
         this.$emit('send-message', this.inputMessage);
+        this.inputMessage = '';
       }
     }
   }
