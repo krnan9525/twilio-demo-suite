@@ -17,6 +17,18 @@ const mutations: MutationTree<NumberStateInterface> = {
     data: boolean
   ) {
     state.loadingNumbers = data;
+  },
+  [NUMBER_MUTATION_TYPES.CHANGE_SMS_SELECTED_NUMBER](
+    state: NumberStateInterface,
+    data: string
+  ) {
+    state.smsSelectedNumber = data;
+  },
+  [NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER](
+    state: NumberStateInterface,
+    data: string
+  ) {
+    state.smsReceiverNumber = data;
   }
 };
 

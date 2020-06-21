@@ -19,6 +19,12 @@ const routes = [
     path: '/sms',
     name: 'sms',
     component: () => import(/* webpackChunkName: "sms" */ '../views/Sms.vue')
+  },
+  {
+    path: '/sms-instance',
+    name: 'sms-instance',
+    component: () =>
+      import(/* webpackChunkName: "sms-instance" */ '../views/SmsInstance.vue')
   }
 ];
 

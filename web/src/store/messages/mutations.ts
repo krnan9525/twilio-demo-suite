@@ -27,6 +27,11 @@ const mutations: MutationTree<MessagesStateInterface> = {
     data: NextPageTokensInterface
   ) {
     state.nextPageTokens = data;
+  },
+  [MESSAGES_MUTATION_TYPES.RESET_MESSAGE_STATE](state: MessagesStateInterface) {
+    state.nextPageTokens = {};
+    state.loadingMessages = false;
+    state.messages = [];
   }
 };
 
