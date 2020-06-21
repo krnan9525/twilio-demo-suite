@@ -7,7 +7,7 @@
       <md-field class="message-input-field">
         <md-input placeholder="Type new message here" v-model="inputMessage" />
       </md-field>
-      <md-button class="md-primary send-btn">
+      <md-button class="md-primary send-btn" @click="onSendClicked()">
         <span class="__text">send </span>
         <md-icon>send</md-icon>
       </md-button>
@@ -46,6 +46,13 @@ export default {
     return {
       inputMessage: ''
     };
+  },
+  methods: {
+    onSendClicked() {
+      if (this.inputMessage) {
+        this.$emit('send-message', this.inputMessage);
+      }
+    }
   }
 };
 </script>

@@ -96,7 +96,10 @@ export default {
       changeSelectedNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_SELECTED_NUMBER
     }),
     ...messagesMapAction([MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER]),
-    ...messagesMapMutation([MESSAGES_MUTATION_TYPES.CLEAR_MESSAGES])
+    ...messagesMapMutation([
+      MESSAGES_MUTATION_TYPES.CLEAR_MESSAGES,
+      MESSAGES_MUTATION_TYPES.RESET_MESSAGE_STATE
+    ])
   },
   data() {
     return {
@@ -106,6 +109,7 @@ export default {
     };
   },
   mounted() {
+    this[MESSAGES_MUTATION_TYPES.RESET_MESSAGE_STATE]();
     this[NUMBER_ACTION_TYPES.FETCH_NUMBERS](this.auth);
   },
   watch: {

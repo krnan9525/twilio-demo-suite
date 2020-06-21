@@ -4,4 +4,5 @@ import controller from './controller';
 export default express
   .Router()
   .get('/message/:from', controller.getSmsByNumber)
-  .get('/message', controller.getAllRecentSms);
+  .get('/message', controller.getAllRecentSms)
+  .post('/message', controller.sendNewMessage);

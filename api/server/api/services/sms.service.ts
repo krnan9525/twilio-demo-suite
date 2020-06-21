@@ -5,6 +5,7 @@ import {
 import axios from 'axios';
 import { publicTwilioEndpoint2010 } from '../consts';
 import { extractPageToken } from '../../common/util/urlHelper';
+import twilio from 'twilio';
 
 export interface SmsFilterInterface extends MessageListInstanceOptions {
   pageToken1?: string;
@@ -63,6 +64,23 @@ class SmsService {
           resolve(response);
         })
         .catch(e => reject(e));
+    });
+  }
+
+  /**
+   * @description send a new SMS message by calling Twilio client API
+   * @param accountSid
+   * @param accessToken
+   * @param messageBody
+   * @param from
+   * @param to
+   */
+  public createNewMessage({ accountSid, accessToken, messageBody, from, to }) {
+    const client = twilio(accountSid, accessToken);
+    return client.messages.create({
+      body: messageBody,
+      from: from,
+      to: to
     });
   }
 
