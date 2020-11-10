@@ -37,6 +37,7 @@
 <script>
 import callsClient from '@/store/network/calls';
 import PaginationControl from '@/components/Common/PaginationControl';
+import moment from 'moment';
 
 export default {
   name: 'call-table',
@@ -74,11 +75,8 @@ export default {
         });
     },
     parseDate(dateString) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString(undefined, {
-        dateStyle: 'medium',
-        timeStyle: 'medium'
-      });
+      const date = new moment(dateString);
+      return date.format('DD MMM YYYY HH:mm:ss');
     }
   }
 };
