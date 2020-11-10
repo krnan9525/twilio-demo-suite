@@ -126,7 +126,10 @@ export default {
     }),
     openConversation() {
       this.changeReceiverNumber(this.number);
-      this.$router.push('sms-instance');
+      this.$router.push({
+        name: 'sms-instance',
+        params: { fromNumber: this.number }
+      });
     }
   }
 };
