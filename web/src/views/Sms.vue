@@ -111,7 +111,10 @@ export default {
     ]),
     onNewConversationClicked() {
       this.changeReceiverNumber('');
-      this.$router.push('sms-instance');
+      this.$router.push({
+        name: 'sms-instance',
+        params: { fromNumber: this.twilioNumber }
+      });
     }
   },
   data() {
