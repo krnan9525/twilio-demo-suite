@@ -24,7 +24,7 @@
                   name="receiver-number"
                   id="receiver-number"
                   v-model="receiverNumberInput"
-                  type="number"
+                  type="text"
                 />
               </md-field>
               <md-button class="md-raised md-primary" @click="setNumber()">
@@ -147,10 +147,12 @@ export default {
   computed: {
     ...mapState(['auth']),
     ...numberMapState({
-      twilioNumber: 'smsSelectedNumber',
       receiverNumber: 'smsReceiverNumber'
     }),
-    ...messagesMapState(['messages'])
+    ...messagesMapState(['messages']),
+    twilioNumber() {
+      return this.$route.params.fromNumber;
+    }
   },
   methods: {
     ...messagesMapMutation({
@@ -212,7 +214,6 @@ export default {
   },
   mounted() {
     this.refreshAllMessages();
-  },
-  watch: {}
+  }
 };
 </script>
