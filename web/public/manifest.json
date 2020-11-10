@@ -1,6 +1,4 @@
 {
-  "name": "call-router-web",
-  "short_name": "call-router-web",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
@@ -74,10 +72,5 @@
       "sizes": "150x150",
       "type": "image/png"
     }
-  ],
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#c12f45",
-  "gcm_sender_id": "352987168059"
+  ]
 }
