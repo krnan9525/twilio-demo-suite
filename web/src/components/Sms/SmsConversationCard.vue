@@ -102,9 +102,9 @@
 </style>
 
 <script>
-import moment from 'moment';
 import { createNamespacedHelpers } from 'vuex';
 import { NUMBER_MUTATION_TYPES } from '@/store/numbers/interfaces';
+const { mapState: numberMapState } = createNamespacedHelpers('numbers');
 
 const { mapMutations: numberMapMutation } = createNamespacedHelpers('numbers');
 
@@ -120,6 +120,9 @@ export default {
       default: () => []
     }
   },
+  computed: {
+    ...numberMapState(['smsSelectedNumber'])
+  },
   methods: {
     ...numberMapMutation({
       changeReceiverNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER
@@ -128,7 +131,7 @@ export default {
       this.changeReceiverNumber(this.number);
       this.$router.push({
         name: 'sms-instance',
-        params: { fromNumber: this.number }
+        params: { fromNumber: this.smsSelectedNumber }
       });
     }
   }
