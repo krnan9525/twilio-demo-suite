@@ -28,10 +28,9 @@ const getters: GetterTree<MessagesStateInterface, any> = {
     }, []);
   },
 
-  [MESSAGE_GETTER_TYPES.MAPPED_MESSAGES](state, thisGetters) {
+  [MESSAGE_GETTER_TYPES.MAPPED_MESSAGES](state, thisGetters, rootState) {
     const { messages } = state;
-    const uniqueNumbers: string[] =
-      thisGetters[MESSAGE_GETTER_TYPES.UNIQUE_NUMBERS];
+    const smsSelectedNumber = rootState.numbers.smsSelectedNumber;
     return messages
       .map(message => ({
         ...message,
@@ -39,10 +38,14 @@ const getters: GetterTree<MessagesStateInterface, any> = {
       }))
       .reduce((prev: MappedMessagesInterface, curr) => {
         let foundNumber;
-        if (uniqueNumbers.indexOf(curr.from) >= 0) {
-          foundNumber = curr.from;
+        if (curr.from === curr.to) {
+          foundNumber = smsSelectedNumber;
         } else {
-          foundNumber = curr.to;
+          if (curr.from === smsSelectedNumber) {
+            foundNumber = curr.to;
+          } else {
+            foundNumber = curr.from;
+          }
         }
         if (!prev[foundNumber]) {
           prev[foundNumber] = [];
