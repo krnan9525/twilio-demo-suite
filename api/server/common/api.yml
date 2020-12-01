@@ -54,6 +54,38 @@ paths:
         200:
           description: call status is changed for this incoming call
           content: {}
+  /voip/twiml-app:
+    post:
+      summary: Create a new TwiML app and return the sid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newTwiMLAppPostBody'
+      responses:
+        200:
+          description: newly created twiML app info
+          content: {}
+  /voip/twiml-app/response:
+    post:
+      summary: Get the TwiML fixture
+      responses:
+        200:
+          description: TwiML fixture
+          content: {}
+  /voip/clientToken:
+    get:
+      summary: get a client token by api key
+      parameters:
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/apiKeyParam'
+        - $ref: '#/components/parameters/apiSecretParam'
+        - $ref: '#/components/parameters/twiMLAppSidParam'
+      responses:
+        200:
+          description: generated JWT
+          content: {}
   /sms/message:
     get:
       summary: Returning all sms history with pagination
@@ -94,6 +126,19 @@ paths:
       responses:
         200:
           description: Returned all SMS history with pagination for a specific from number
+          content: {}
+  /users/createApiKey:
+    post:
+      summary: Create a new API key and return the value
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createApiKeyPostBody'
+      responses:
+        200:
+          description: newly created api key info
           content: {}
   /users/allLocalNumbers:
     get:
@@ -136,6 +181,24 @@ components:
       schema:
         type: string
       required: true
+    apiKeyParam:
+      in: query
+      name: apiKey
+      schema:
+        type: string
+      required: true
+    apiSecretParam:
+      in: query
+      name: secret
+      schema:
+        type: string
+      required: true
+    twiMLAppSidParam:
+      in: query
+      name: twiMLAppSid
+      schema:
+        type: string
+      required: true
     pageTokenParam:
       in: query
       name: pageToken
@@ -169,6 +232,26 @@ components:
   schemas:
     loginAuthPostBody:
       title: authBody
+      required:
+      - accountSid
+      - accessToken
+      properties:
+        accountSid:
+          type: string
+        accessToken:
+          type: string
+    newTwiMLAppPostBody:
+      title: twiMLBody
+      required:
+      - accountSid
+      - accessToken
+      properties:
+        accountSid:
+          type: string
+        accessToken:
+          type: string
+    createApiKeyPostBody:
+      title: apiKeyBody
       required:
       - accountSid
       - accessToken
