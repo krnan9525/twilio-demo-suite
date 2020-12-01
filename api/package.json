@@ -24,7 +24,7 @@
     "morgan": "^1.10.0",
     "pino": "^5.13.6",
     "redis": "^2.8.0",
-    "twilio": "^3.38.0",
+    "twilio": "^3.52.0",
     "web-push": "^3.4.3"
   },
   "devDependencies": {

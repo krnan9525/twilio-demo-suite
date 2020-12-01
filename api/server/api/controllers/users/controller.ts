@@ -14,5 +14,12 @@ export class Controller {
       .then(r => res.json(r))
       .catch(e => res.status(400).send(e.messsge));
   }
+
+  createApiKey(req: Request, res: Response): void {
+    const { accountSid, accessToken } = req.body;
+    UsersService.createNewApiKey(accountSid, accessToken)
+      .then(r => res.json(r))
+      .catch(e => res.status(400).send(e.messsge));
+  }
 }
 export default new Controller();
