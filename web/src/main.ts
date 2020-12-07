@@ -18,7 +18,8 @@ import {
   MdSnackbar,
   MdTable,
   MdIcon,
-  MdDialog
+  MdDialog,
+  MdCheckbox
   // @ts-ignore
 } from 'vue-material/dist/components';
 import 'vue-material/dist/vue-material.min.css';
@@ -39,6 +40,7 @@ Vue.use(MdSnackbar);
 Vue.use(MdTable);
 Vue.use(MdIcon);
 Vue.use(MdDialog);
+Vue.use(MdCheckbox);
 
 // GA configurations
 Vue.use(VueGtag, {
@@ -52,3 +54,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app');
+
+export const EventBus = new Vue();

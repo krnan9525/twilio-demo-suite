@@ -1,6 +1,7 @@
 import twilio from 'twilio';
 import L from '../../common/logger';
 import { clientIdentity, hostUrl } from '../consts';
+import VoiceResponse from 'twilio/lib/twiml/VoiceResponse';
 
 interface ITwiMLApp {
   sid: string;
@@ -19,7 +20,7 @@ export class VoipService {
   ): Promise<ITwiMLApp> {
     try {
       const client = twilio(accountSid, accessToken);
-      const twiMLCallbackUrl = `${hostUrl}voip/twiml-app/response`;
+      const twiMLCallbackUrl = `${hostUrl}api/v1/voip/twiml-app/response`;
       const application = await client.applications.create({
         voiceMethod: 'POST',
         voiceUrl: twiMLCallbackUrl,
@@ -34,10 +35,24 @@ export class VoipService {
       throw e;
     }
   }
+  async getTwiMlResponse(from: string, to: string): Promise<string> {
+    const twiml = new twilio.twiml.VoiceResponse();
+
+    if (to) {
+      const dial = twiml.dial({
+        answerOnBridge: true,
+        callerId: from
+      });
+      dial.number(to);
+    } else {
+      twiml.say('To number is not provided. This call will be ended.');
+    }
+    return twiml.toString();
+  }
   async getClientTokenForVoip(
     apiKey,
     secret,
-    twiMLAppSidParam,
+    twiMlAppSidParam,
     accountSid
   ): Promise<IClientIdentity> {
     try {
@@ -51,7 +66,7 @@ export class VoipService {
       );
 
       const grant = new twilio.jwt.AccessToken.VoiceGrant({
-        outgoingApplicationSid: twiMLAppSidParam,
+        outgoingApplicationSid: twiMlAppSidParam,
         incomingAllow: true
       });
       accessToken.addGrant(grant);

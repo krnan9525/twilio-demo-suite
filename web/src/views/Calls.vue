@@ -26,7 +26,7 @@ import CallRouterInputForm from '@/components/Home/CallRouterInputForm';
 import { mapState } from 'vuex';
 
 export default {
-  name: 'home',
+  name: 'calls-tab',
   components: { CallRouterInputForm },
   computed: {
     ...mapState(['auth'])

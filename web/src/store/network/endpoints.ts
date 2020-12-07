@@ -25,6 +25,18 @@ export class Endpoints {
   smsMessage = {
     post: '/api/v1/sms/message'
   };
+
+  createApiKey = {
+    post: '/api/v1/users/createApiKey'
+  };
+
+  twiMlApp = {
+    post: '/api/v1/voip/twiml-app'
+  };
+
+  voipClientToken = {
+    get: '/api/v1/voip/clientToken'
+  };
 }
 
 export default new Endpoints();

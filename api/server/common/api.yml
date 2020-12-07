@@ -81,7 +81,7 @@ paths:
         - $ref: '#/components/parameters/authAccountSidParam'
         - $ref: '#/components/parameters/apiKeyParam'
         - $ref: '#/components/parameters/apiSecretParam'
-        - $ref: '#/components/parameters/twiMLAppSidParam'
+        - $ref: '#/components/parameters/twiMlAppSidParam'
       responses:
         200:
           description: generated JWT
@@ -189,13 +189,13 @@ components:
       required: true
     apiSecretParam:
       in: query
-      name: secret
+      name: apiSecret
       schema:
         type: string
       required: true
-    twiMLAppSidParam:
+    twiMlAppSidParam:
       in: query
-      name: twiMLAppSid
+      name: twiMlAppSid
       schema:
         type: string
       required: true
