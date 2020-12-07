@@ -39,6 +39,17 @@
           </md-option>
         </md-select>
       </md-field>
+      <md-snackbar
+        md-position="center"
+        :md-duration="2500"
+        :md-active.sync="showSnackbar"
+        md-persistent
+      >
+        <span>{{ snackbarMessage }}</span>
+        <md-button class="md-primary" @click="showSnackbar = false">
+          Close
+        </md-button>
+      </md-snackbar>
     </div>
   </div>
 </template>
@@ -62,7 +73,9 @@ export default {
       outputDevicesOptions: [],
       inputDeviceOptions: [],
       selectedOutputDevice: '',
-      selectedInputDevice: ''
+      selectedInputDevice: '',
+      showSnackbar: false,
+      snackbarMessage: ''
     };
   },
   mounted() {
@@ -73,7 +86,7 @@ export default {
       })
       .catch(() => {
         // TODO: add error message
-        console.log('No mic connected');
+        // console.log('No mic connected');
       });
     EventBus.$on('create-voip-call', payload => this.createCall(payload));
   },
@@ -130,7 +143,7 @@ export default {
     setListeners() {
       setTimeout(() => {
         this.device.on('connect', function(conn) {
-          console.log('Successfully established call!');
+          // console.log('Successfully established call!');
         });
       }, 100);
     },
@@ -139,15 +152,15 @@ export default {
       this.device.audio.speakerDevices.set(this.selectedOutputDevice);
     },
     createCall(payload) {
-      console.log(payload);
-      if (this.device) {
-        const outgoingConnection = this.device.connect({
+      if (this.device && this.microphonePermissionGranted) {
+        this.device.connect({
           From: payload.from,
           To: payload.to
         });
-        outgoingConnection.on('ringing', function() {
-          console.log('Ringing...');
-        });
+      } else {
+        this.showSnackbar = true;
+        this.snackbarMessage =
+          'Please check if you have microphone permission granted and try again.';
       }
     }
   },
