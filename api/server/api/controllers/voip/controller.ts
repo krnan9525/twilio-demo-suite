@@ -9,12 +9,19 @@ export class Controller {
       .catch(e => res.status(400).send(e.messsge));
   }
   twiMLAppResponse(req: Request, res: Response): void {
-    const twiMLFixture = `<Response><Say>Thanks for calling!</Say></Response>`;
-    res.send(twiMLFixture);
+    const { From, To } = req.body;
+    VoipService.getTwiMlResponse(From, To)
+      .then(r => res.send(r))
+      .catch(e => res.status(400).send(e.messsge));
   }
   getClientTokenForVoip(req: Request, res: Response): void {
-    const { apiKey, secret, twiMLAppSid, accountSid } = req.query;
-    VoipService.getClientTokenForVoip(apiKey, secret, twiMLAppSid, accountSid)
+    const { apiKey, apiSecret, twiMlAppSid, accountSid } = req.query;
+    VoipService.getClientTokenForVoip(
+      apiKey,
+      apiSecret,
+      twiMlAppSid,
+      accountSid
+    )
       .then(r => res.json(r))
       .catch(e => res.status(400).send(e.messsge));
   }
