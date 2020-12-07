@@ -49,25 +49,27 @@
             </div>
             <div v-if="isUsingVoip" class="voip-input-container">
               <voip-config-form />
-              <voip-source-selection />
+              <voip-source-selection :from-number="twilioNumber || ''" />
             </div>
-            <md-field>
-              <label for="connecting-number">Number you want to call</label>
-              <!--              TODO: add validator             -->
-              <md-input
-                name="connectingNumber"
-                id="connecting-number"
-                type="number"
-                v-model="connectNumber"
-              />
-            </md-field>
-            <md-button
-              class="md-raised md-primary"
-              @click="call()"
-              :disable="callButtonDisabled"
-            >
-              Call
-            </md-button>
+            <div v-else>
+              <md-field>
+                <label for="connecting-number">Number you want to call</label>
+                <!--              TODO: add validator             -->
+                <md-input
+                  name="connectingNumber"
+                  id="connecting-number"
+                  type="number"
+                  v-model="connectNumber"
+                />
+              </md-field>
+              <md-button
+                class="md-raised md-primary"
+                @click="call()"
+                :disable="callButtonDisabled"
+              >
+                Call
+              </md-button>
+            </div>
           </div>
         </md-card-content>
       </md-card>
@@ -92,7 +94,6 @@ import pushSubscriber from '@/util/pushSubscriber';
 import callsClient from '@/store/network/calls';
 import VoipConfigForm from './VoipConfigForm';
 import VoipSourceSelection from '@/components/Home/VoipSourceSelection';
-import { EventBus } from '@/main';
 
 export default {
   name: 'CallRouterInputForm',
@@ -146,51 +147,44 @@ export default {
       }, 100);
     },
     call() {
-      if (this.isUsingVoip) {
-        EventBus.$emit('create-voip-call', {
-          from: this.twilioNumber,
-          to: this.connectNumber
-        });
-      } else {
-        pushSubscriber.getSubscriber().then(res => {
-          this.callButtonDisabled = true;
-          callsClient
-            .forwardCall({
-              clientInfo: res
-                ? {
-                    endpoint: res.endpoint,
-                    auth: res.keys.auth,
-                    p256dh: res.keys.p256dh
-                  }
-                : null,
-              accessToken: this.accessToken,
-              accountSid: this.accountSid,
-              connectNumber: this.connectNumber,
-              hostNumber: this.hostNumber,
-              twilioNumber: this.twilioNumber
-            })
-            .then(callRes => {
-              const callSid = callRes.sid;
-              this.callButtonDisabled = false;
-              this.snackbarDuration = Infinity;
-              this.snackbarMessage = `Request is submitted. You will receive a call shortly.${
-                callSid ? '\nCall Sid: ' + callSid : ''
-              }`;
-              this.showSnackbar = true;
-            })
-            .catch(e => {
-              // console.log('Error making the API call: ' + e.message);
-              this.callButtonDisabled = false;
-              this.snackbarDuration = Infinity;
-              this.snackbarMessage = `There is an error connecting your call. ${
-                e.message
-                  ? 'Error: ' + e.message
-                  : 'Please check Twilio dashboard for more information.'
-              }`;
-              this.showSnackbar = true;
-            });
-        });
-      }
+      pushSubscriber.getSubscriber().then(res => {
+        this.callButtonDisabled = true;
+        callsClient
+          .forwardCall({
+            clientInfo: res
+              ? {
+                  endpoint: res.endpoint,
+                  auth: res.keys.auth,
+                  p256dh: res.keys.p256dh
+                }
+              : null,
+            accessToken: this.accessToken,
+            accountSid: this.accountSid,
+            connectNumber: this.connectNumber,
+            hostNumber: this.hostNumber,
+            twilioNumber: this.twilioNumber
+          })
+          .then(callRes => {
+            const callSid = callRes.sid;
+            this.callButtonDisabled = false;
+            this.snackbarDuration = Infinity;
+            this.snackbarMessage = `Request is submitted. You will receive a call shortly.${
+              callSid ? '\nCall Sid: ' + callSid : ''
+            }`;
+            this.showSnackbar = true;
+          })
+          .catch(e => {
+            // console.log('Error making the API call: ' + e.message);
+            this.callButtonDisabled = false;
+            this.snackbarDuration = Infinity;
+            this.snackbarMessage = `There is an error connecting your call. ${
+              e.message
+                ? 'Error: ' + e.message
+                : 'Please check Twilio dashboard for more information.'
+            }`;
+            this.showSnackbar = true;
+          });
+      });
     }
   }
 };

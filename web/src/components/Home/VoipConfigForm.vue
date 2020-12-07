@@ -2,8 +2,9 @@
   <div>
     <div class="voip-info">
       <span class="__info-text md-subheading">
-        To use Twilio for VoIP calls, you need to have a TwiML App and access
-        token set up. Use the functions below to quickly have these set up
+        Voice over IP calls allow you to have phone calls from this browser. To
+        use Twilio for VoIP calls, you need to have a TwiML App and access token
+        set up. Use the functions below to quickly have these set up
         programmatically. You can always review these changes from Twilio
         console.
       </span>
