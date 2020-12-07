@@ -22,7 +22,7 @@
       </md-field>
       <md-field>
         <label for="inputDevicesOptions">
-          Select an output device
+          Select an input device
         </label>
         <md-select
           name="inputDevicesOptions"
@@ -39,6 +39,42 @@
           </md-option>
         </md-select>
       </md-field>
+      <span class="__info-text md-subheading">
+        If you see an 'Unknown Device' error on above selections, please enable
+        browser's microphone permission from the site settings.
+      </span>
+      <md-field>
+        <label for="connecting-number">Number you want to call</label>
+        <md-input
+          name="connectingNumber"
+          id="connecting-number"
+          type="number"
+          v-model="toNumber"
+        />
+      </md-field>
+      <div class="__call-control">
+        <span class="__ringing-text md-subheading" v-if="isRinging"
+          >Ringing...</span
+        >
+        <span class="__ringing-text md-subheading" v-if="isConnected"
+          >Connected</span
+        >
+        <md-button
+          v-if="!isConnected && !isRinging"
+          class="md-raised md-primary"
+          @click="createVoipCall()"
+          :disable="callButtonDisabled"
+        >
+          Call
+        </md-button>
+        <md-button
+          v-if="isConnected || isRinging"
+          class="md-raised md-accent"
+          @click="hungUpVoipCall()"
+        >
+          Hung up
+        </md-button>
+      </div>
       <md-snackbar
         md-position="center"
         :md-duration="2500"
@@ -66,6 +102,12 @@ import { EventBus } from '@/main';
 
 export default {
   name: 'voip-source-selection',
+  props: {
+    fromNumber: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       device: null,
@@ -75,7 +117,11 @@ export default {
       selectedOutputDevice: '',
       selectedInputDevice: '',
       showSnackbar: false,
-      snackbarMessage: ''
+      snackbarMessage: '',
+      toNumber: '',
+      callButtonDisabled: false,
+      isConnected: false,
+      isRinging: false
     };
   },
   mounted() {
@@ -142,8 +188,13 @@ export default {
     },
     setListeners() {
       setTimeout(() => {
-        this.device.on('connect', function(conn) {
-          // console.log('Successfully established call!');
+        this.device.on('connect', () => {
+          this.isConnected = true;
+          this.isRinging = false;
+        });
+        this.device.on('disconnect', () => {
+          this.isConnected = false;
+          this.isRinging = false;
         });
       }, 100);
     },
@@ -151,17 +202,24 @@ export default {
       this.device.audio.ringtoneDevices.set(this.selectedInputDevice);
       this.device.audio.speakerDevices.set(this.selectedOutputDevice);
     },
-    createCall(payload) {
+    createVoipCall() {
       if (this.device && this.microphonePermissionGranted) {
-        this.device.connect({
-          From: payload.from,
-          To: payload.to
+        const conn = this.device.connect({
+          From: this.fromNumber,
+          To: this.toNumber
+        });
+        conn.on('ringing', () => {
+          this.isRinging = true;
+          this.isConnected = false;
         });
       } else {
         this.showSnackbar = true;
         this.snackbarMessage =
           'Please check if you have microphone permission granted and try again.';
       }
+    },
+    hungUpVoipCall() {
+      this.device.disconnectAll();
     }
   },
   computed: {
@@ -184,4 +242,15 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.device-selection-container {
+  display: flex;
+  flex-direction: column;
+  .__call-control {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
