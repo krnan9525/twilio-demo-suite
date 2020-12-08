@@ -1,9 +1,6 @@
 import { ActionTree, MutationTree } from 'vuex';
 import Login from '@/store/network/login';
-import Voip, {
-  NewApiKeyResponseInterface,
-  NewTwiMlAppResponseInterface
-} from '@/store/network/voip';
+import Voip, { NewTwiMlAppResponseInterface } from '@/store/network/voip';
 import { saveVoIpDataToLocalStorage } from '@/util/localStorage';
 
 // states
@@ -13,7 +10,12 @@ export interface AuthInterface {
   accessToken: string;
 }
 
-export interface VoIpAuthInterface {
+export interface TokenAuthInterface {
+  apiKey: string;
+  apiSecret: string;
+}
+
+export interface VoipDataStorageInterface {
   apiKey: string;
   apiSecret: string;
   twiMlAppSid: string;
@@ -24,7 +26,8 @@ export interface SharedStateInterface {
   // loadingAuth only used on the first screen loading when account SID and auth token are set
   loadingAuth: boolean;
   auth: AuthInterface;
-  voIpAuth: VoIpAuthInterface;
+  tokenAuth: TokenAuthInterface;
+  twiMlAppSid: string;
 }
 
 export const initState: SharedStateInterface = {
@@ -34,19 +37,19 @@ export const initState: SharedStateInterface = {
     accountSid: '',
     accessToken: ''
   },
-  voIpAuth: {
-    twiMlAppSid: '',
-    apiSecret: '',
-    apiKey: ''
-  }
+  tokenAuth: {
+    apiKey: '',
+    apiSecret: ''
+  },
+  twiMlAppSid: ''
 };
 
 // mutations
 
 export const MUTATION_TYPES = {
   SET_AUTH: 'SET_AUTH',
-  SET_VOIP_AUTH: 'SET_VOIP_AUTH',
-  SET_API_KEY_AND_TOKEN: 'SET_API_KEY_AND_TOKEN',
+  SET_VOIP_DATA: 'SET_VOIP_DATA',
+  SET_TOKEN_AUTH: 'SET_TOKEN_AUTH',
   SET_TWIML_APP_SID: 'SET_TWIML_APP_SID',
   SET_CONNECTED: 'SET_CONNECTED',
   SET_LOADING_AUTH: 'SET_LOADING_AUTH',
@@ -57,30 +60,31 @@ export const mutations: MutationTree<SharedStateInterface> = {
   [MUTATION_TYPES.SET_AUTH](state: SharedStateInterface, data: AuthInterface) {
     state.auth = data;
   },
-  [MUTATION_TYPES.SET_VOIP_AUTH](
+  [MUTATION_TYPES.SET_TOKEN_AUTH](
     state: SharedStateInterface,
-    data: VoIpAuthInterface
+    data: TokenAuthInterface
   ) {
-    state.voIpAuth = data;
+    state.tokenAuth = {
+      ...state.tokenAuth,
+      apiSecret: data.apiSecret,
+      apiKey: data.apiKey
+    };
   },
-  [MUTATION_TYPES.SET_API_KEY_AND_TOKEN](
+  [MUTATION_TYPES.SET_VOIP_DATA](
     state: SharedStateInterface,
-    data: NewApiKeyResponseInterface
+    data: VoipDataStorageInterface
   ) {
-    state.voIpAuth = {
-      ...state.voIpAuth,
-      apiSecret: data.secret,
-      apiKey: data.sid
+    state.twiMlAppSid = data.twiMlAppSid;
+    state.tokenAuth = {
+      apiSecret: data.apiSecret,
+      apiKey: data.apiKey
     };
   },
   [MUTATION_TYPES.SET_TWIML_APP_SID](
     state: SharedStateInterface,
     data: NewTwiMlAppResponseInterface
   ) {
-    state.voIpAuth = {
-      ...state.voIpAuth,
-      twiMlAppSid: data.sid
-    };
+    state.twiMlAppSid = data.sid;
   },
   [MUTATION_TYPES.SET_CONNECTED](state: SharedStateInterface, data: boolean) {
     state.isConnected = data;
@@ -140,14 +144,17 @@ export const actions: ActionTree<SharedStateInterface, any> = {
       });
   },
   [ACTION_TYPES.GENERATE_API_KEY]: ({ commit, state }, auth: AuthInterface) => {
-    Voip.generateNewApiKey(auth)
+    Login.generateNewApiKey(auth)
       .then(res => {
         saveVoIpDataToLocalStorage({
           apiKey: res.sid,
           apiSecret: res.secret,
-          twiMlAppSid: state.voIpAuth.twiMlAppSid
+          twiMlAppSid: state.twiMlAppSid
         });
-        commit(MUTATION_TYPES.SET_API_KEY_AND_TOKEN, res);
+        commit(MUTATION_TYPES.SET_TOKEN_AUTH, {
+          apiKey: res.sid,
+          apiSecret: res.secret
+        });
       })
       .catch(() => {
         // TODO: display network error element
@@ -161,8 +168,8 @@ export const actions: ActionTree<SharedStateInterface, any> = {
     Voip.generateTwiMlApp(auth)
       .then(res => {
         saveVoIpDataToLocalStorage({
-          apiKey: state.voIpAuth.apiKey,
-          apiSecret: state.voIpAuth.apiSecret,
+          apiKey: state.tokenAuth.apiKey,
+          apiSecret: state.tokenAuth.apiSecret,
           twiMlAppSid: res.sid
         });
         commit(MUTATION_TYPES.SET_TWIML_APP_SID, res);

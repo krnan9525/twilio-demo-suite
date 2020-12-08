@@ -93,7 +93,7 @@ import numbers from '@/store/network/numbers';
 import pushSubscriber from '@/util/pushSubscriber';
 import callsClient from '@/store/network/calls';
 import VoipConfigForm from './VoipConfigForm';
-import VoipSourceSelection from '@/components/Home/VoipSourceSelection';
+import VoipSourceSelection from '@/components/Calls/VoipSourceSelection';
 
 export default {
   name: 'CallRouterInputForm',

@@ -9,13 +9,13 @@
         console.
       </span>
       <div class="__api-token-container">
-        <div v-if="voIpAuth.apiKey && voIpAuth.apiSecret">
+        <div v-if="tokenAuth.apiKey && tokenAuth.apiSecret">
           <span class="md-subheading"
-            >The API token in use is: {{ voIpAuth.apiKey }}</span
+            >The API token in use is: {{ tokenAuth.apiKey }}</span
           >
         </div>
         <div v-else>
-          <span class="md-subheading">API KEY is not found</span>
+          <span class="md-subheading">No API KEY is found</span>
         </div>
         <md-button
           class="md-primary md-raised"
@@ -24,9 +24,9 @@
         >
       </div>
       <div class="__twiMl-container">
-        <div v-if="voIpAuth.twiMlAppSid">
+        <div v-if="twiMlAppSid">
           <span class="md-subheading"
-            >The TwiML App in use is: {{ voIpAuth.twiMlAppSid }}</span
+            >The TwiML App in use is: {{ twiMlAppSid }}</span
           >
         </div>
         <div v-else>
@@ -53,7 +53,7 @@ import { getVoIpDataFromLocalStorage } from '@/util/localStorage';
 export default {
   name: 'voip-config-form',
   methods: {
-    ...mapMutations([rootMutations.SET_VOIP_AUTH]),
+    ...mapMutations([rootMutations.SET_VOIP_DATA]),
     ...mapActions([
       rootActions.GENERATE_API_KEY,
       rootActions.GENERATE_TWIML_APP
@@ -66,10 +66,10 @@ export default {
     }
   },
   mounted() {
-    this[rootMutations.SET_VOIP_AUTH](getVoIpDataFromLocalStorage());
+    this[rootMutations.SET_VOIP_DATA](getVoIpDataFromLocalStorage());
   },
   computed: {
-    ...mapState(['auth', 'voIpAuth'])
+    ...mapState(['auth', 'tokenAuth', 'twiMlAppSid'])
   }
 };
 </script>

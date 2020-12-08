@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import CallRouterInputForm from '@/components/Home/CallRouterInputForm';
+import CallRouterInputForm from '@/components/Calls/CallRouterInputForm';
 import { mapState } from 'vuex';
 
 export default {
