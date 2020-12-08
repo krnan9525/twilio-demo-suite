@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="calls">
     <div class="call-router-input-container">
       <CallRouterInputForm
         ref="callInputForm"

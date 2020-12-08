@@ -6,8 +6,9 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: () => import(/* webpackChunkName: "home" */ '../views/Calls.vue')
+    name: 'calls',
+    component: () =>
+      import(/* webpackChunkName: "calls" */ '../views/Calls.vue')
   },
   {
     path: '/call-logs',

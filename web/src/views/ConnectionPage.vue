@@ -49,14 +49,14 @@ export default {
     },
     saveAccountDetails(callback) {
       if (validator.sidValidator(this.accountSid)) {
-        const authObj = {
+        const auth = {
           [LocalStorageEnums.SID]: this.accountSid,
           [LocalStorageEnums.TOKEN]: this.accessToken
         };
-        this[ACTION_TYPES.AUTHENTICATE_WITH_ANIMATION](authObj)
+        this[ACTION_TYPES.AUTHENTICATE_WITH_ANIMATION](auth)
           .then(fn => {
             callback(fn);
-            saveCredentialToLocalStorage(authObj);
+            saveCredentialToLocalStorage(auth);
           })
           .catch(err => {
             this.snackbarMessage =
