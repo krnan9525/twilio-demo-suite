@@ -1,7 +1,6 @@
 import twilio from 'twilio';
 import L from '../../common/logger';
 import { clientIdentity, hostUrl } from '../consts';
-import VoiceResponse from 'twilio/lib/twiml/VoiceResponse';
 
 interface ITwiMLApp {
   sid: string;
