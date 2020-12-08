@@ -76,12 +76,23 @@ paths:
           content: {}
   /voip/clientToken:
     get:
-      summary: get a client token by api key
+      summary: get a voip client token by api key
       parameters:
         - $ref: '#/components/parameters/authAccountSidParam'
         - $ref: '#/components/parameters/apiKeyParam'
         - $ref: '#/components/parameters/apiSecretParam'
         - $ref: '#/components/parameters/twiMlAppSidParam'
+      responses:
+        200:
+          description: generated JWT
+          content: {}
+  /video/clientToken:
+    get:
+      summary: get a video client token by api key
+      parameters:
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/apiKeyParam'
+        - $ref: '#/components/parameters/apiSecretParam'
       responses:
         200:
           description: generated JWT

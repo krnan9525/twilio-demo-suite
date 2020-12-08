@@ -17,6 +17,12 @@ const routes = [
       import(/* webpackChunkName: "call-logs" */ '../views/CallLogs.vue')
   },
   {
+    path: '/video',
+    name: 'video',
+    component: () =>
+      import(/* webpackChunkName: "video" */ '../views/Video.vue')
+  },
+  {
     path: '/sms',
     name: 'sms',
     component: () => import(/* webpackChunkName: "sms" */ '../views/Sms.vue')
