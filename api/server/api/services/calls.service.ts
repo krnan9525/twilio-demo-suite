@@ -2,11 +2,7 @@ import twilio from 'twilio';
 import Redis from '../../common/util/redisHelper';
 import Push, { ISubscription } from '../../common/util/push';
 import { hostUrl } from '../consts';
-import {
-  CallInstance,
-  CallPage,
-  CallStatus as TwilioCallStatus
-} from 'twilio/lib/rest/api/v2010/account/call';
+import { CallInstance, CallPage } from 'twilio/lib/rest/api/v2010/account/call';
 import { extractPageToken } from '../../common/util/urlHelper';
 
 interface ICall {

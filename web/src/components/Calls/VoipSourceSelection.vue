@@ -91,14 +91,10 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
-import {
-  MUTATION_TYPES as rootMutations,
-  ACTION_TYPES as rootActions
-} from '@/store/sharedState';
+import { mapState, mapActions } from 'vuex';
+import { ACTION_TYPES as rootActions } from '@/store/sharedState';
 import Voip from '@/store/network/voip';
 import { Device } from 'twilio-client';
-import { EventBus } from '@/main';
 
 export default {
   name: 'voip-source-selection',
@@ -134,10 +130,8 @@ export default {
         // TODO: add error message
         // console.log('No mic connected');
       });
-    EventBus.$on('create-voip-call', payload => this.createCall(payload));
   },
   methods: {
-    ...mapMutations([rootMutations.SET_VOIP_AUTH]),
     ...mapActions([
       rootActions.GENERATE_API_KEY,
       rootActions.GENERATE_TWIML_APP
@@ -145,9 +139,9 @@ export default {
     initVoipClient() {
       if (this.isInfoValidated) {
         Voip.getNewClientToken({
-          twiMlAppSid: this.voIpAuth.twiMlAppSid,
-          apiSecret: this.voIpAuth.apiSecret,
-          apiKey: this.voIpAuth.apiKey,
+          twiMlAppSid: this.twiMlAppSid,
+          apiSecret: this.tokenAuth.apiSecret,
+          apiKey: this.tokenAuth.apiKey,
           accountSid: this.auth.accountSid
         }).then(res => {
           this.device = new Device(res.token, {
@@ -223,19 +217,22 @@ export default {
     }
   },
   computed: {
-    ...mapState(['auth', 'voIpAuth']),
+    ...mapState(['auth', 'tokenAuth', 'twiMlAppSid']),
     isInfoValidated() {
       // TODO: add validation
       return (
-        this.voIpAuth.twiMlAppSid &&
-        this.voIpAuth.apiSecret &&
-        this.voIpAuth.apiKey &&
+        this.twiMlAppSid &&
+        this.tokenAuth.apiSecret &&
+        this.tokenAuth.apiKey &&
         this.auth.accountSid
       );
     }
   },
   watch: {
-    voIpAuth() {
+    tokenAuth() {
+      this.initVoipClient();
+    },
+    twiMlAppSid() {
       this.initVoipClient();
     }
   }

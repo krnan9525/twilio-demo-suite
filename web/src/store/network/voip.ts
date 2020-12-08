@@ -25,20 +25,6 @@ export interface GetNewClientResponseInterface {
 }
 
 export class Voip {
-  generateNewApiKey(data: AuthInterface) {
-    return axios
-      .post(endpoints.host + endpoints.createApiKey.post, data)
-      .then((res: AxiosResponse<NewApiKeyResponseInterface>) => {
-        return res.data;
-      })
-      .catch(e => {
-        if (e.response?.data?.errors?.length > 0) {
-          const errors = e.response.data.errors;
-          throw new Error(errors[0].message);
-        }
-        throw e;
-      });
-  }
   generateTwiMlApp(data: AuthInterface) {
     return axios
       .post(endpoints.host + endpoints.twiMlApp.post, data)

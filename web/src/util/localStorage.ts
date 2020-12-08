@@ -1,5 +1,9 @@
 import { LocalStorageEnums } from '@/common/enums';
-import { AuthInterface, VoIpAuthInterface } from '@/store/sharedState';
+import {
+  AuthInterface,
+  TokenAuthInterface,
+  VoipDataStorageInterface
+} from '@/store/sharedState';
 
 export const getCredentialFromLocalStorage = () => {
   const accountSid = localStorage.getItem(LocalStorageEnums.SID || '');
@@ -17,20 +21,20 @@ export const saveCredentialToLocalStorage = (obj: AuthInterface) => {
   localStorage.setItem(LocalStorageEnums.TOKEN, accessToken);
 };
 
-export const getVoIpDataFromLocalStorage = () => {
+export const getVoIpDataFromLocalStorage = (): VoipDataStorageInterface => {
   const apiKey = localStorage.getItem(LocalStorageEnums.API_KEY || '');
   const apiSecret = localStorage.getItem(LocalStorageEnums.API_TOKEN || '');
   const twiMlAppSid = localStorage.getItem(
     LocalStorageEnums.TWIML_APP_SID || ''
   );
   return {
-    apiKey,
-    apiSecret,
-    twiMlAppSid
+    apiKey: apiKey || '',
+    apiSecret: apiSecret || '',
+    twiMlAppSid: twiMlAppSid || ''
   };
 };
 
-export const saveVoIpDataToLocalStorage = (obj: VoIpAuthInterface) => {
+export const saveVoIpDataToLocalStorage = (obj: VoipDataStorageInterface) => {
   const apiKey = obj.apiKey;
   const apiSecret = obj.apiSecret;
   const twiMlAppSid = obj.twiMlAppSid;
@@ -38,6 +42,15 @@ export const saveVoIpDataToLocalStorage = (obj: VoIpAuthInterface) => {
   apiSecret && localStorage.setItem(LocalStorageEnums.API_TOKEN, apiSecret);
   twiMlAppSid &&
     localStorage.setItem(LocalStorageEnums.TWIML_APP_SID, twiMlAppSid);
+};
+
+export const getTokenAuthFromLocalStorage = (): TokenAuthInterface => {
+  const apiKey = localStorage.getItem(LocalStorageEnums.API_KEY || '');
+  const apiSecret = localStorage.getItem(LocalStorageEnums.API_TOKEN || '');
+  return {
+    apiKey: apiKey || '',
+    apiSecret: apiSecret || ''
+  };
 };
 
 export const clearStorage = () => {

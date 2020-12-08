@@ -3,4 +3,5 @@ import controller from './controller';
 
 export default express
   .Router()
-  .get('/clientToken', controller.getClientTokenForVoice);
+  .get('/newRoomClientToken', controller.getNewRoomClientTokenForVoice)
+  .get('/joiningRoomClientToken', controller.getJoiningRoomClientTokenForVoice);

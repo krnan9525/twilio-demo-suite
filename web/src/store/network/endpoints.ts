@@ -37,6 +37,14 @@ export class Endpoints {
   voipClientToken = {
     get: '/api/v1/voip/clientToken'
   };
+
+  videoNewRoomClientToken = {
+    get: '/api/v1/video/newRoomClientToken'
+  };
+
+  videoJoiningRoomClientToken = {
+    get: '/api/v1/video/joiningRoomClientToken'
+  };
 }
 
 export default new Endpoints();

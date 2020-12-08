@@ -21,6 +21,7 @@
                 to="call-logs"
                 exact
               />
+              <md-tab id="tab-video" md-label="Video" to="video" exact />
               <md-tab id="tab-sms" md-label="SMS" to="sms" exact />
               <md-tab id="tab-about" md-label="About" to="about" />
             </md-tabs>

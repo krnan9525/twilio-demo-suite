@@ -1,6 +1,31 @@
 <template>
-  <div class="video">
-    <div class="video-container"></div>
+  <div>
+    <div class="status-bar">
+      <video-status-header :connected="isConnected" />
+    </div>
+    <div class="video-container">
+      <div id="local-media"></div>
+      <div id="remote-medias"></div>
+    </div>
+    <div class="control-btn-container">
+      <div v-if="!isConnected" class="__create-room">
+        <md-field>
+          <label for="password">Password for this chat room (optional)</label>
+          <md-input
+            name="password"
+            id="password"
+            type="text"
+            v-model="password"
+          />
+        </md-field>
+        <md-button
+          class="md-primary __create-btn md-raised"
+          @click="onCreateClicked()"
+        >
+          create chat room
+        </md-button>
+      </div>
+    </div>
     <md-snackbar
       md-position="center"
       :md-duration="2500"
@@ -17,38 +42,124 @@
 
 <script>
 import { mapState } from 'vuex';
-import { connect } from 'twilio-video';
+import Video from '@/store/network/video';
+import { connect, createLocalVideoTrack } from 'twilio-video';
+import VideoStatusHeader from '@/components/Video/VideoStatusHeader';
 
 export default {
   name: 'video-tab',
-  components: {},
-  mounted() {
-    connect(
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzQ0YjMwYjA3MGFjMzViNTBlMjE4OTc5YzdlZDVkZDdhLTE2MDc0Mjg1MDMiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJ0d2lsaW8tZGVtby1zdWl0ZS1jbGllbnQiLCJ2aWRlbyI6eyJyb29tIjoidHdpbGlvLWRlbW8tc3VpdGUtcm9vbS0xNjA3NDI4NTAzIn19LCJpYXQiOjE2MDc0Mjg1MDMsImV4cCI6MTYwNzQzMjEwMywiaXNzIjoiU0s0NGIzMGIwNzBhYzM1YjUwZTIxODk3OWM3ZWQ1ZGQ3YSIsInN1YiI6IkFDNDJjNTYwYmIzODI3MWU5MTViMWJhMjk2MTk0ZjBjNmYifQ.tYHCsnlXZxzc2S7ZaYI8TadFIuQXn4oxVJSd99JzrKI',
-      {
-        audio: true,
-        video: { width: 640 }
-      }
-    ).then(
-      room => {
-        console.log(`Successfully joined a Room: ${room}`);
-        room.on('participantConnected', participant => {
-          console.log(`A remote Participant connected: ${participant}`);
-        });
-      },
-      error => {
-        console.error(`Unable to connect to Room: ${error.message}`);
-      }
-    );
-  },
-  computed: {
-    ...mapState(['auth'])
-  },
+  components: { VideoStatusHeader },
   data() {
     return {
       snackbarMessage: '',
-      showSnackbar: false
+      showSnackbar: false,
+      isConnected: false,
+      password: Math.floor(Math.random() * 1000008)
     };
+  },
+  mounted() {
+    createLocalVideoTrack().then(track => {
+      const localMediaContainer = document.getElementById('local-media');
+      localMediaContainer.appendChild(track.attach());
+    });
+  },
+  computed: {
+    ...mapState(['tokenAuth', 'auth']),
+    isInfoValidated() {
+      // TODO: add validation
+      return (
+        this.tokenAuth.apiSecret &&
+        this.tokenAuth.apiKey &&
+        this.auth.accountSid
+      );
+    }
+  },
+  methods: {
+    onCreateClicked() {
+      if (this.isInfoValidated) {
+        Video.getNewRoomClientToken({
+          apiSecret: this.tokenAuth.apiSecret,
+          apiKey: this.tokenAuth.apiKey,
+          accountSid: this.auth.accountSid,
+          password: this.password
+        })
+          .then(res => {
+            this.createChatRoomAndConnect(res.token);
+          })
+          .catch(() => {
+            this.showSnackbar = true;
+            this.snackbarMessage =
+              'Cannot create a chat room now. Please try again later.';
+          });
+      }
+    },
+    createChatRoomAndConnect(token) {
+      connect(token, {
+        audio: true,
+        video: { width: 640 }
+      }).then(
+        room => {
+          this.initVideoAfterJoining(room);
+          this.setupListener(room);
+        },
+        error => {
+          this.showSnackbar = true;
+          this.snackbarMessage = `Unable to connect to Room: ${error.message}`;
+        }
+      );
+    },
+    initVideoAfterJoining(room) {
+      this.isConnected = true;
+      this.showSnackbar = true;
+      this.snackbarMessage = `Successfully joined a Room: ${room}`;
+      room.participants.forEach(participant => {
+        participant.tracks.forEach(publication => {
+          setTimeout(() => {
+            if (publication.isSubscribed) {
+              const track = publication.track;
+              document
+                .getElementById('remote-medias')
+                .appendChild(track.attach());
+            }
+          }, 250);
+        });
+      });
+    },
+    setupListener(room) {
+      room.on('participantConnected', participant => {
+        this.showSnackbar = true;
+        this.snackbarMessage = `Participant "${participant.identity}" connected`;
+        participant.tracks.forEach(publication => {
+          setTimeout(() => {
+            if (publication.isSubscribed) {
+              const track = publication.track;
+              document
+                .getElementById('remote-medias')
+                .appendChild(track.attach());
+            }
+          }, 250);
+        });
+      });
+    }
   }
 };
 </script>
+
+<style scoped lang="scss">
+.status-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.control-btn-container {
+  display: flex;
+  justify-content: center;
+  .__create-room {
+    display: flex;
+    max-width: 600px;
+    .__create-btn {
+      width: 250px;
+    }
+  }
+}
+</style>

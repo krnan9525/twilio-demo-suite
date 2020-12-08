@@ -86,13 +86,26 @@ paths:
         200:
           description: generated JWT
           content: {}
-  /video/clientToken:
+  /video/newRoomClientToken:
     get:
       summary: get a video client token by api key
       parameters:
         - $ref: '#/components/parameters/authAccountSidParam'
         - $ref: '#/components/parameters/apiKeyParam'
         - $ref: '#/components/parameters/apiSecretParam'
+        - $ref: '#/components/parameters/roomPasswordParam'
+        - $ref: '#/components/parameters/nameParam'
+      responses:
+        200:
+          description: generated JWT
+          content: {}
+  /video/joiningRoomClientToken:
+    get:
+      summary: get a video client token by api key
+      parameters:
+        - $ref: '#/components/parameters/roomParam'
+        - $ref: '#/components/parameters/roomPasswordParam'
+        - $ref: '#/components/parameters/nameParam'
       responses:
         200:
           description: generated JWT
@@ -204,6 +217,24 @@ components:
       schema:
         type: string
       required: true
+    roomParam:
+      in: query
+      name: room
+      schema:
+        type: string
+      required: true
+    roomPasswordParam:
+      in: query
+      name: password
+      schema:
+        type: string
+      required: true
+    nameParam:
+      in: query
+      name: name
+      schema:
+        type: string
+      required: false
     twiMlAppSidParam:
       in: query
       name: twiMlAppSid
