@@ -72,7 +72,7 @@
           class="md-raised md-accent"
           @click="hungUpVoipCall()"
         >
-          Hung up
+          Hang up
         </md-button>
       </div>
       <md-snackbar
