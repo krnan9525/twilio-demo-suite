@@ -1,9 +1,13 @@
 export class Endpoints {
   host =
-    // ? 'https://marknanyang.com/call-router/api'
     process.env.NODE_ENV === 'production'
       ? 'https://calls.api.marknanyang.com'
       : 'http://localhost:3000';
+
+  webLocation =
+    process.env.NODE_ENV === 'production'
+      ? 'https://calls.marknanyang.com'
+      : 'http://localhost:8080';
 
   activeNumbers = {
     get: '/api/v1/users/allLocalNumbers'

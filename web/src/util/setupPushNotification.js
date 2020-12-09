@@ -4,16 +4,10 @@ import Keys from '../const/keys';
 if ('Notification' in window) {
   try {
     // Chrome and most of other browsers
-    Notification &&
-      Notification.requestPermission().then(res => {
-        console.log('Notification permission status:', res);
-      });
+    Notification && Notification.requestPermission().then(res => {});
   } catch (e) {
     // Safari on desktop
-    Notification &&
-      Notification.requestPermission(res => {
-        console.log('Notification permission status:', res);
-      });
+    Notification && Notification.requestPermission(res => {});
   }
 }
 
@@ -21,16 +15,10 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('service-worker.js')
     .then(function(reg) {
-      console.log('Service Worker Registered!', reg);
-
       reg.pushManager.getSubscription().then(function(sub) {
         if (sub === null) {
-          // Update UI to ask user to register for Push
-          console.log('Not subscribed to push service!');
           subscribeUser();
         } else {
-          // We have a subscription, update the database
-          console.log('Subscription object: ', sub);
           subscribeUser();
         }
       });
@@ -48,10 +36,7 @@ function subscribeUser() {
           userVisibleOnly: true,
           applicationServerKey: Keys.applicationServerKey
         })
-        .then(sub => {
-          // console.log(JSON.stringify(sub));
-          console.log('Subscribed with WebPush API');
-        })
+        .then(sub => {})
         .catch(function(e) {
           if (Notification.permission === 'denied') {
             console.warn('Permission for notifications was denied');
