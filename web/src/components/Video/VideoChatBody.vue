@@ -91,7 +91,7 @@ export default {
             apiKey: this.tokenAuth.apiKey,
             accountSid: this.auth.accountSid,
             password: this.password,
-            name: this.name || undefined
+            name: this.username || undefined
           })
             .then(res => {
               this.createChatRoomOrConnect(res.token);
@@ -106,7 +106,7 @@ export default {
           Video.getJoiningRoomClientToken({
             room: this.room,
             password: this.password,
-            name: this.name || undefined
+            name: this.username || undefined
           })
             .then(res => {
               this.createChatRoomOrConnect(res.token);
