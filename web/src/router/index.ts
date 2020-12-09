@@ -23,6 +23,12 @@ const routes = [
       import(/* webpackChunkName: "video" */ '../views/Video.vue')
   },
   {
+    path: '/video/invite/:roomId',
+    name: 'video-invite',
+    component: () =>
+      import(/* webpackChunkName: "video-invite" */ '../views/VideoGuest.vue')
+  },
+  {
     path: '/sms',
     name: 'sms',
     component: () => import(/* webpackChunkName: "sms" */ '../views/Sms.vue')

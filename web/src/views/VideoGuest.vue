@@ -1,17 +1,9 @@
 <template>
   <div>
     <div class="status-bar">
-      <video-status-header
-        :connected="isConnected"
-        intent="owner"
-        :password="password"
-      />
+      <video-status-header :connected="isConnected" intent="guest" />
     </div>
-    <video-chat-body
-      @connectedChanged="onConnectedChanged"
-      intent="owner"
-      @passwordCreated="val => (password = val)"
-    />
+    <video-chat-body @connectedChanged="onConnectedChanged" intent="guest" />
   </div>
 </template>
 

@@ -5,7 +5,7 @@
         <md-app-toolbar class="md-large md-dense md-primary">
           <div class="md-toolbar-row">
             <div class="md-toolbar-section-start">
-              <span class="md-title">Call Forwarder</span>
+              <span class="md-title">Twilio DEMO Suite</span>
               <auth-connection-indicator
                 v-if="isConnected"
                 class="connection-indicator"
@@ -29,7 +29,10 @@
         </md-app-toolbar>
         <md-app-content>
           <h2 v-if="loadingAuth">Loading</h2>
-          <router-view v-else-if="isConnected" class="__p-t-3" />
+          <router-view
+            v-else-if="isConnected || shouldBypassAuth"
+            class="__p-t-3"
+          />
           <ConnectionPage v-else />
         </md-app-content>
       </md-app>
@@ -71,7 +74,10 @@ export default {
     ...mapActions([ACTION_TYPES.AUTHENTICATE])
   },
   computed: {
-    ...mapState(['isConnected', 'loadingAuth'])
+    ...mapState(['isConnected', 'loadingAuth']),
+    shouldBypassAuth() {
+      return this.$route.path.includes('/video/invite');
+    }
   },
   mounted() {
     this[ACTION_TYPES.AUTHENTICATE](getCredentialFromLocalStorage());
