@@ -28,7 +28,7 @@
             class="md-primary __create-btn md-raised"
             @click="onCreateClicked()"
           >
-            {{ isOwner ? 'create a chat room' : 'join the chat room' }}
+            {{ isOwner ? 'create' : 'join' }}
           </md-button>
         </div>
       </div>
