@@ -6,24 +6,39 @@
     <md-table>
       <md-table-row>
         <md-table-head>Time</md-table-head>
-        <md-table-head>Host's Number</md-table-head>
-        <md-table-head>Twilio Number</md-table-head>
-        <md-table-head>Receiver's Number</md-table-head>
-        <md-table-head md-numeric>Duration (seconds)</md-table-head>
+        <md-table-head class="number-column-header">
+          <span class="host-number-label">Host's Number</span>
+          <span class="twilio-number-label">Twilio Number</span>
+          <span class="receiver-number-label">Receiver's Number</span>
+        </md-table-head>
+        <md-table-head>Duration</md-table-head>
         <md-table-head>Cost</md-table-head>
         <md-table-head>Actions</md-table-head>
       </md-table-row>
 
       <md-table-row v-for="call in calls" :key="call.sid">
         <md-table-cell>{{ parseDate(call.startTime) }}</md-table-cell>
-        <md-table-cell>{{ call.fromFormatted }}</md-table-cell>
-        <md-table-cell>{{ call.twilioNumberFormatted }}</md-table-cell>
-        <md-table-cell>{{ call.toFormatted }}</md-table-cell>
-        <md-table-cell>{{ call.duration }}</md-table-cell>
+        <md-table-cell class="number-cell">
+          <span class="__single_number">
+            <span class="host-number-label __m-r-1">H: </span
+            >{{ call.fromFormatted }}</span
+          >
+          <span class="__single_number">
+            <span class="twilio-number-label __m-r-1">T: </span>
+            {{ call.twilioNumberFormatted }}
+          </span>
+          <span class="__single_number">
+            <span class="receiver-number-label __m-r-1">R: </span
+            >{{ call.toFormatted }}</span
+          >
+        </md-table-cell>
+        <md-table-cell>{{ call.duration }} seconds</md-table-cell>
         <md-table-cell>{{
           call.cost ? call.cost + ' ' + call.costUnit : 'Not Calculated'
         }}</md-table-cell>
-        <md-table-cell>button here</md-table-cell>
+        <md-table-cell>
+          <md-button class="md-primary">call again</md-button>
+        </md-table-cell>
       </md-table-row>
     </md-table>
     <PaginationControl
@@ -88,5 +103,41 @@ export default {
 }
 .table-header {
   color: $__primary-colour;
+}
+.number-column-header {
+  height: 110px;
+  /deep/ .md-table-head-container {
+    height: initial;
+    display: flex;
+    .md-table-head-label {
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+/deep/ .md-table-cell-container {
+  text-align: left;
+}
+.number-cell {
+  /deep/.md-table-cell-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .__single_number {
+    display: flex;
+  }
+}
+.host-number-label {
+  color: $__primary-colour;
+  font-weight: bolder;
+}
+.twilio-number-label {
+  color: $__accent-colour;
+  font-weight: bolder;
+}
+.receiver-number-label {
+  color: $__secondary-text-colour;
+  font-weight: bolder;
 }
 </style>

@@ -1,7 +1,7 @@
 import twilio from 'twilio';
 import Redis from '../../common/util/redisHelper';
 import Push, { ISubscription } from '../../common/util/push';
-import { hostUrl } from '../consts';
+import { clientIdentity, hostUrl } from '../consts';
 import { CallInstance, CallPage } from 'twilio/lib/rest/api/v2010/account/call';
 import { extractPageToken } from '../../common/util/urlHelper';
 
@@ -17,6 +17,7 @@ interface ICall {
   costUnit: string;
   sid: string;
   duration: string;
+  type: string;
 }
 
 interface IGetCallResponse {
@@ -164,7 +165,11 @@ export class CallsService {
   private formatCallsForResponse(res: CallPage): ICall[] {
     const calls = res.toJSON().instances as CallInstance[];
     return calls
-      .filter(call => call.direction === CallDirectionEnum.OUTBOUND_API)
+      .filter(
+        call =>
+          call.direction === CallDirectionEnum.OUTBOUND_API ||
+          call.from === 'client:' + clientIdentity
+      )
       .map(
         (call: CallInstance): ICall => {
           const spawnedCall = calls.find(
@@ -172,8 +177,36 @@ export class CallsService {
               callToFind.parentCallSid === call.sid &&
               callToFind.direction === CallDirectionEnum.OUTBOUND_DIAL
           );
+          const callCost = call.price ? Math.abs(Number(call.price)) : 0;
+          const spawnedCallCost =
+            spawnedCall && spawnedCall.price
+              ? Math.abs(Number(spawnedCall.price))
+              : 0;
+
+          if (call.from === 'client:' + clientIdentity) {
+            return {
+              cost: `${callCost}(in) + ${spawnedCallCost}(out) = ${callCost +
+                spawnedCallCost}`,
+              costUnit: call.priceUnit,
+              duration: call.duration,
+              twilioNumber: spawnedCall ? spawnedCall.from : null,
+              twilioNumberFormatted: spawnedCall
+                ? spawnedCall.fromFormatted
+                : null,
+              from: 'N/A (VoIP call)',
+              fromFormatted: 'N/A (VoIP call)',
+              sid: call.sid,
+              startTime: call.startTime.toISOString(),
+              to: spawnedCall ? spawnedCall.to : call.to,
+              toFormatted: spawnedCall
+                ? spawnedCall.toFormatted
+                : call.toFormatted,
+              type: 'voip'
+            };
+          }
           return {
-            cost: call.price ? String(Math.abs(Number(call.price))) : null,
+            cost: `${callCost}(in) + ${spawnedCallCost}(out) = ${callCost +
+              spawnedCallCost}`,
             costUnit: call.priceUnit,
             duration: call.duration,
             twilioNumber: spawnedCall ? call.from : null,
@@ -185,7 +218,8 @@ export class CallsService {
             to: spawnedCall ? spawnedCall.to : call.to,
             toFormatted: spawnedCall
               ? spawnedCall.toFormatted
-              : call.toFormatted
+              : call.toFormatted,
+            type: 'forwarded'
           };
         }
       );
