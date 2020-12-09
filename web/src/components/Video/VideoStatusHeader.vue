@@ -2,7 +2,7 @@
   <div>
     <div class="video-status-container">
       <div
-        v-if="!tokenAuth.apiKey || !tokenAuth.apiSecret"
+        v-if="isOwner && (!tokenAuth.apiKey || !tokenAuth.apiSecret)"
         class="__no-auth-token"
       >
         <span class="md-subheading">No API KEY is found</span>
@@ -12,9 +12,10 @@
           >Generate a new API Key</md-button
         >
       </div>
-      <div v-else class="__auth-token-info"></div>
+      <!--<div v-else class="__auth-token-info"></div>-->
       <div v-if="connected" class="__connected-info">
         <span class="md-subheading">Connected!</span>
+        <span class="md-subheading __m-l-3">Password: {{ password }}</span>
       </div>
     </div>
   </div>
@@ -35,6 +36,14 @@ export default {
       type: Boolean,
       default: false
     },
+    intent: {
+      type: String,
+      require: true
+    },
+    password: {
+      type: String,
+      default: ''
+    },
     duration: {
       type: Number || null,
       default: null
@@ -44,7 +53,10 @@ export default {
     this[rootMutations.SET_TOKEN_AUTH](getTokenAuthFromLocalStorage());
   },
   computed: {
-    ...mapState(['tokenAuth', 'auth'])
+    ...mapState(['tokenAuth', 'auth']),
+    isOwner() {
+      return this.intent === 'owner';
+    }
   },
   methods: {
     ...mapMutations([rootMutations.SET_TOKEN_AUTH]),
