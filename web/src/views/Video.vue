@@ -11,21 +11,25 @@
       @connectedChanged="onConnectedChanged"
       intent="owner"
       @passwordCreated="val => (password = val)"
+      @roomCreated="val => (room = val)"
     />
+    <invite-link :password="password" :room="room"></invite-link>
   </div>
 </template>
 
 <script>
 import VideoStatusHeader from '@/components/Video/VideoStatusHeader';
 import VideoChatBody from '@/components/Video/VideoChatBody';
+import InviteLink from '@/components/Video/InviteLink';
 
 export default {
   name: 'video-tab',
-  components: { VideoChatBody, VideoStatusHeader },
+  components: { InviteLink, VideoChatBody, VideoStatusHeader },
   data() {
     return {
       isConnected: false,
-      password: ''
+      password: '',
+      room: null
     };
   },
   methods: {

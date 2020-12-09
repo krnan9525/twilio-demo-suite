@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="video-container">
-      <div id="local-media"></div>
-      <div id="remote-medias"></div>
-    </div>
+    <video-preview-and-display :video-tracks="participantTracks" />
     <div class="control-btn-container">
       <div v-if="!isConnected" class="__create-room">
         <div class="__row1">
@@ -35,6 +32,14 @@
           </md-button>
         </div>
       </div>
+      <div v-else class="__hang-up">
+        <md-button
+          class="md-primary __hang-up-btn md-raised"
+          @click="onHangUpClicked()"
+        >
+          Hang Up
+        </md-button>
+      </div>
     </div>
     <md-snackbar
       md-position="center"
@@ -52,11 +57,22 @@
 
 <script>
 import Video from '@/store/network/video';
-import { connect, createLocalVideoTrack } from 'twilio-video';
+import { connect } from 'twilio-video';
 import { mapState } from 'vuex';
+import VideoPreviewAndDisplay from '@/components/Video/VideoPreviewAndDisplay';
+
+const composePublicationEle = (publication, participant) => {
+  return {
+    track: publication.track,
+    identity: participant.identity,
+    participantSid: participant.sid,
+    id: publication.trackSid
+  };
+};
 
 export default {
   name: 'video-chat-body',
+  components: { VideoPreviewAndDisplay },
   props: {
     intent: {
       type: String,
@@ -70,17 +86,15 @@ export default {
       isConnected: false,
       username: '',
       password: Math.floor(Math.random() * 1000008) + '',
-      room: ''
+      room: '',
+      participantTracks: [],
+      activeRoom: null
     };
   },
   mounted() {
     if (!this.isOwner) {
       this.setParamVariables();
     }
-    createLocalVideoTrack().then(track => {
-      const localMediaContainer = document.getElementById('local-media');
-      localMediaContainer.appendChild(track.attach());
-    });
   },
   methods: {
     onCreateClicked() {
@@ -95,7 +109,7 @@ export default {
           })
             .then(res => {
               this.createChatRoomOrConnect(res.token);
-              this.$emit('passwordCreated', this.password);
+              this.room = res.room;
             })
             .catch(() => {
               this.showSnackbar = true;
@@ -125,6 +139,7 @@ export default {
         video: { width: 640 }
       }).then(
         room => {
+          this.activeRoom = room;
           this.initVideoAfterJoining(room);
           this.setupListener(room);
         },
@@ -136,6 +151,8 @@ export default {
     },
     initVideoAfterJoining(room) {
       this.$emit('connectedChanged', true);
+      this.$emit('passwordCreated', this.password);
+      this.$emit('roomCreated', this.room);
       this.isConnected = true;
       this.showSnackbar = true;
       this.snackbarMessage = `Successfully joined a Room: ${room}`;
@@ -143,10 +160,9 @@ export default {
         participant.tracks.forEach(publication => {
           setTimeout(() => {
             if (publication.isSubscribed) {
-              const track = publication.track;
-              document
-                .getElementById('remote-medias')
-                .appendChild(track.attach());
+              this.participantTracks.push(
+                composePublicationEle(publication, participant)
+              );
             }
           }, 250);
         });
@@ -159,18 +175,42 @@ export default {
         participant.tracks.forEach(publication => {
           setTimeout(() => {
             if (publication.isSubscribed) {
-              const track = publication.track;
-              document
-                .getElementById('remote-medias')
-                .appendChild(track.attach());
+              this.participantTracks.push(
+                composePublicationEle(publication, participant)
+              );
             }
           }, 250);
         });
       });
+      room.on('participantDisconnected', participant => {
+        this.showSnackbar = true;
+        this.snackbarMessage = `Participant "${participant.identity}" has disconnected from the Room`;
+        this.participantTracks = this.participantTracks.filter(
+          p => p.participantSid !== participant.sid
+        );
+      });
+      room.on('disconnected', room => {
+        room.localParticipant.tracks.forEach(publication => {
+          const attachedElements = publication.track.detach();
+          attachedElements.forEach(element => element.remove());
+        });
+        this.participantTracks = [];
+      });
     },
     setParamVariables() {
-      this.password = this.$route.params.password;
+      this.password = this.$route.query.password;
       this.room = this.$route.params.roomId;
+    },
+    onHangUpClicked() {
+      if (this.activeRoom) {
+        this.activeRoom.disconnect();
+        this.showSnackbar = true;
+        this.snackbarMessage = `Call has ended.`;
+        this.isConnected = false;
+        this.$emit('connectedChanged', false);
+        this.$emit('passwordCreated', '');
+        this.$emit('roomCreated', '');
+      }
     }
   },
   computed: {
