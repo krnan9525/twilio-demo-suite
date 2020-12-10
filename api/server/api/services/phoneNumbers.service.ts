@@ -1,25 +1,58 @@
 import axios from "axios";
 import { publicTwilioEndpoint2010 } from "../consts";
 
+export type PhoneNumberType = 'Mobile' | 'Local' | 'TollFree';
+
 interface AvailableCountryInterface {
   country_code: string;
   country: string;
   uri: string;
   beta: boolean;
   subresource_uris: {
-    local: string;
+    local?: string;
     mobile?: string;
     toll_free?: string
   }
 }
 
-interface AvailablePhoneNumbersResponse {
+interface AvailablePhoneInterface {
+  iso_country: string;
+  phone_number: string;
+  capabilities: {
+    SMS: string;
+    MMS: string;
+    voice?: string
+  }
+}
+
+interface AvailablePhoneNumbersCountriesResponse {
   data: {
     countries: [AvailableCountryInterface];
   }
 }
 
+interface AvailablePhoneNumbersResponse {
+  data: {
+    available_phone_numbers: [AvailablePhoneInterface];
+  }
+}
+
 class PhoneNumbersService {
+  private getAvailablePhoneTypes(urls) {
+    const result = [];
+    if (urls.local) {
+      result.push('Local');
+    }
+    if (urls.mobile) {
+      result.push('Mobile');
+    }
+    if (urls.toll_free) {
+      result.push('TollFree');
+    }
+
+    return result;
+  }
+
   public getAvailableCountries(accountSid: string, accessToken: string) {
     return axios
       .get(
@@ -31,7 +64,31 @@ class PhoneNumbersService {
           },
         }
       )
-      .then((response: AvailablePhoneNumbersResponse) => response.data.countries);
+      .then((response: AvailablePhoneNumbersCountriesResponse) => response.data.countries.map(country => ({
+        countryCode: country.country_code,
+        country: country.country,
+        supportedTypes: this.getAvailablePhoneTypes(country.subresource_uris)
+      })));
+  }
+
+  public getAvailableNumbers(accountSid: string, accessToken: string, country: string, type: PhoneNumberType) {
+    return axios
+      .get(
+        `${publicTwilioEndpoint2010}Accounts/${accountSid}/AvailablePhoneNumbers/${country}/${type}.json`,
+        {
+          auth: {
+            username: accountSid,
+            password: accessToken,
+          },
+        }
+      )
+      .then((response: AvailablePhoneNumbersResponse) => response.data.available_phone_numbers.map(number => ({
+        isoCountry: number.iso_country,
+        number: number.phone_number,
+        voiceEnabled: number.capabilities.voice,
+        smsEnabled: number.capabilities.SMS,
+        mmsEnabled: number.capabilities.MMS,
+      })));
   }
 }
 
