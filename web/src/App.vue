@@ -14,6 +14,7 @@
           </div>
           <div v-if="isConnected" class="md-toolbar-row">
             <md-tabs class="md-primary" md-sync-route md-swipeable>
+              <md-tab id="tab-numbers" md-label="numbers" to="/numbers" exact />
               <md-tab id="tab-calls" md-label="Calls" to="/" exact />
               <md-tab
                 id="call-logs"
@@ -21,9 +22,9 @@
                 to="call-logs"
                 exact
               />
-              <md-tab id="tab-video" md-label="Video" to="video" exact />
-              <md-tab id="tab-sms" md-label="SMS" to="sms" exact />
-              <md-tab id="tab-about" md-label="About" to="about" />
+              <md-tab id="tab-video" md-label="Video" to="/video" exact />
+              <md-tab id="tab-sms" md-label="SMS" to="/sms" exact />
+              <md-tab id="tab-about" md-label="About" to="/about" exact />
             </md-tabs>
           </div>
         </md-app-toolbar>
@@ -57,6 +58,10 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.md-toolbar-row {
+  overflow-x: auto;
 }
 </style>
 

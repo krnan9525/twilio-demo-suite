@@ -1,8 +1,16 @@
+interface NumberCapacityDirectionInterface {
+  in: boolean;
+  out: boolean;
+}
+
 export interface NumberInterface {
   sid: string;
   friendlyName: string;
   number: string;
   country: string;
+  voiceEnabled: NumberCapacityDirectionInterface;
+  smsEnabled: NumberCapacityDirectionInterface;
+  mmsEnabled: NumberCapacityDirectionInterface;
 }
 
 export interface NumberStateInterface {

@@ -1,5 +1,6 @@
 <template>
   <div class="calls">
+    <span class="tab-title">Twilio Calls</span>
     <div class="call-router-input-container">
       <CallRouterInputForm
         ref="callInputForm"

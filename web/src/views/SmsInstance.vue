@@ -9,7 +9,7 @@
           <span class="__text"> Back</span>
         </md-button>
         <div v-if="this.twilioNumber" class="messages-body-container">
-          <h3>Conversation History</h3>
+          <span class="tab-title __m-t-2">Conversation History</span>
           <div class="numbers-block">
             <span class="__twilio-number">
               Twilio Number: {{ this.twilioNumber }}
