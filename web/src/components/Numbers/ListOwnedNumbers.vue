@@ -56,6 +56,7 @@ const {
   mapActions: numberMapActions,
   mapMutations: numberMapMutation
 } = createNamespacedHelpers('numbers');
+
 export default {
   name: 'list-owned-numbers',
   components: { CapabilityCell },
