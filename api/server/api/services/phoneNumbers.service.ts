@@ -19,7 +19,7 @@ interface AvailablePhoneNumbersResponse {
   }
 }
 
-class PhoneNumberService {
+class PhoneNumbersService {
   public getAvailableCountries(accountSid: string, accessToken: string) {
     return axios
       .get(
@@ -35,4 +35,4 @@ class PhoneNumberService {
   }
 }
 
-export default new PhoneNumberService();
+export default new PhoneNumbersService();
