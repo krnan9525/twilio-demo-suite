@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-card class="md-layout-item md-size-50 md-small-size-100 __m-b-4">
+    <md-card class="md-layout-item md-size-75 md-small-size-100 __m-b-4">
       <md-card-header>
         <div class="md-title">Purchase New Twilio Numbers</div>
       </md-card-header>
