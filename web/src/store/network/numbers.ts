@@ -22,19 +22,16 @@ export class Numbers {
     if (!validator.sidValidator(accountSid)) {
       return Promise.reject(new Error('Account Sid is in wrong format'));
     }
-    //todo: implement this
-    return Promise.resolve([
-      {
-        country: 'United States',
-        countryCode: 'US',
-        supportedTypes: ['local']
-      },
-      {
-        country: 'Ireland',
-        countryCode: 'IE',
-        supportedTypes: ['mobile', 'toll_free']
-      }
-    ]);
+    return axios
+      .get(endpoints.host + endpoints.availableCountries.get, {
+        params: {
+          accountSid,
+          accessToken
+        }
+      })
+      .then(res => {
+        return res.data;
+      });
   }
   getNumbersToBuy(
     accountSid: string,
@@ -45,30 +42,32 @@ export class Numbers {
     if (!validator.sidValidator(accountSid)) {
       return Promise.reject(new Error('Account Sid is in wrong format'));
     }
-    //todo: implement this
-    return Promise.resolve([
-      {
-        isoCountry: 'US',
-        number: '+17866611346',
-        voiceEnabled: true,
-        smsEnabled: false,
-        mmsEnabled: false
-      },
-      {
-        isoCountry: 'US',
-        number: '+17866611347',
-        voiceEnabled: true,
-        smsEnabled: false,
-        mmsEnabled: true
-      }
-    ]);
+    return axios
+      .get(
+        `${endpoints.host}${endpoints.numbersToBuy.get}/${country}/${type}`,
+        {
+          params: {
+            accountSid,
+            accessToken
+          }
+        }
+      )
+      .then(res => {
+        return res.data;
+      });
   }
   buyNewNumber(accountSid: string, accessToken: string, number: string) {
     if (!validator.sidValidator(accountSid)) {
       return Promise.reject(new Error('Account Sid is in wrong format'));
     }
-    //todo: implement this
-    return Promise.resolve();
+    return axios.post(
+      `${endpoints.host}${endpoints.purchasePhoneNumber.post}`,
+      {
+        accountSid,
+        accessToken,
+        phoneNumber: number
+      }
+    );
   }
 }
 
