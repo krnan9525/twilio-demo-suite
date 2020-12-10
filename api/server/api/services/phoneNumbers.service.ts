@@ -90,6 +90,19 @@ class PhoneNumbersService {
         mmsEnabled: number.capabilities.MMS,
       })));
   }
-}
 
+  public purchasePhoneNumber(accountSid: string, accessToken: string, phoneNumber: string) {
+    return axios
+      .post(
+        `https://preview.twilio.com/Numbers/ActiveNumbers`,
+        `PhoneNumber=${phoneNumber}`,
+        {
+          auth: {
+            username: accountSid,
+            password: accessToken,
+          }
+        }
+      )
+  }
+}
 export default new PhoneNumbersService();
