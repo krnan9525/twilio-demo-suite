@@ -4,3 +4,4 @@ import controller from './controller';
 export default express
   .Router()
   .get('/availableCountries', controller.getAvailableCountries)
+  .get('/availableNumbers/:country/:type/', controller.getAvailableNumbers)
