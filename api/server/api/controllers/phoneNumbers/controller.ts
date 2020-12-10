@@ -22,6 +22,22 @@ export class PhoneNumbersController {
       })
       .catch(next);
   }
+
+  purchasePhoneNumber(req: Request, res: Response, next: NextFunction): void {
+    const { accountSid, accessToken, phoneNumber } = req.body;
+
+    PhoneNumbersService.purchasePhoneNumber(
+      accountSid,
+      accessToken,
+      phoneNumber
+    )
+      .then(() => {
+          res.status(204);
+          res.send();
+        }
+      )
+      .catch(next)
+  }
 }
 
 export default new PhoneNumbersController();
