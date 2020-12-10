@@ -2,8 +2,10 @@
   <div>
     <div>
       <span class="tab-title">Twilio Numbers</span>
-      <buy-new-numbers />
-      <list-owned-numbers />
+      <div class="card-views">
+        <buy-new-numbers class="__card" />
+        <list-owned-numbers class="__card" />
+      </div>
     </div>
   </div>
 </template>
@@ -17,4 +19,15 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.card-views {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .__card {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
+</style>
