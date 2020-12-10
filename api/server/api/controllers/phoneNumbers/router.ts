@@ -5,3 +5,4 @@ export default express
   .Router()
   .get('/availableCountries', controller.getAvailableCountries)
   .get('/availableNumbers/:country/:type/', controller.getAvailableNumbers)
+  .post('/purchasePhoneNumber', controller.purchasePhoneNumber);
