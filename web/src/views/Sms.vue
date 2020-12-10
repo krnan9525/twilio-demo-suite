@@ -42,24 +42,6 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.sms-inputs {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.sms-conversations-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.conversations {
-}
-</style>
-
 <script>
 import { mapState, createNamespacedHelpers } from 'vuex';
 import {
@@ -142,3 +124,21 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.sms-inputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.sms-conversations-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.conversations {
+}
+</style>
