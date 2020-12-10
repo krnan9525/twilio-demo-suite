@@ -191,6 +191,19 @@ paths:
           description: success
         403:
           description: forbidden
+  /phone/availableCountries:
+    get:
+      summary: Returning available phone number countries (countries list)
+      tags:
+        - countries
+      parameters:
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/authTokenParam'
+      responses:
+        200:
+          description: Returned all available phone numbers countries (countries list)
+          content: {}
+
 components:
   parameters:
     authTokenParam:

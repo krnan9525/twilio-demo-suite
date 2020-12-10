@@ -6,6 +6,7 @@ import loginRouter from './api/controllers/login/router';
 import smsRouter from './api/controllers/sms/router';
 import voipRouter from './api/controllers/voip/router';
 import videoRouter from './api/controllers/video/router';
+import phoneRouter from './api/controllers/phone/router';
 
 export default function routes(app: Application): void {
   app.use('/api/v1/examples', examplesRouter);
@@ -15,4 +16,5 @@ export default function routes(app: Application): void {
   app.use('/api/v1/sms', smsRouter);
   app.use('/api/v1/voip', voipRouter);
   app.use('/api/v1/video', videoRouter);
+  app.use('/api/v1/phone', phoneRouter);
 }
