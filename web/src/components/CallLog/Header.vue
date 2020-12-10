@@ -1,9 +1,6 @@
 <template functional>
   <div class="header">
-    <h3 class="header-text">
-      Your account sid and auth token inputted before will be used here to get
-      your call list.
-    </h3>
+    <span class="md-title">Call Logs</span>
   </div>
 </template>
 

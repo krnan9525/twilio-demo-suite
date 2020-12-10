@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span class="tab-title">SMS</span>
     <div class="sms-inputs">
       <sms-twilio-number-selection
         class="sms-number-selection m-b-3"

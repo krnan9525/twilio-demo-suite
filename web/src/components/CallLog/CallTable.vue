@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="header-component">
-      <span class="table-header md-title">Your call logs</span>
-    </div>
     <md-table>
       <md-table-row>
         <md-table-head>Time</md-table-head>
