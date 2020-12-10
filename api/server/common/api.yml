@@ -203,6 +203,20 @@ paths:
         200:
           description: Returned all available phone numbers countries (countries list)
           content: {}
+  /phoneNumbers/availableNumbers/{country}/{phoneNumberType}:
+    get:
+      summary: Returning available phone numbers for country
+      tags:
+        - countries
+      parameters:
+        - $ref: '#/components/parameters/authAccountSidParam'
+        - $ref: '#/components/parameters/authTokenParam'
+        - $ref: '#/components/parameters/country'
+        - $ref: '#/components/parameters/phoneNumberSupportedTypes'
+      responses:
+        200:
+          description: Returned all available phone numbers for country
+          content: {}
 
 components:
   parameters:
@@ -284,6 +298,19 @@ components:
       schema:
         type: string
       required: false
+    country:
+      in: path
+      name: country
+      schema:
+        type: string
+      required: true
+    phoneNumberSupportedTypes:
+      in: path
+      name: phoneNumberType
+      schema:
+        type: string
+        enum: [Mobile, Local, TollFree]
+      required: true
   schemas:
     loginAuthPostBody:
       title: authBody
