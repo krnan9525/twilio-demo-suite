@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import PhoneNumberService from '../../services/phone.service';
+import PhoneNumbersService from '../../services/phoneNumbers.service';
 
-export class PhoneController {
+export class PhoneNumbersController {
   getAvailableCountries(req: Request, res: Response, next: NextFunction): void {
     const { accountSid, accessToken } = req.query;
 
-    PhoneNumberService.getAvailableCountries(accountSid, accessToken)
+    PhoneNumbersService.getAvailableCountries(accountSid, accessToken)
       .then(countries => {
         res.json(countries);
       })
@@ -13,4 +13,4 @@ export class PhoneController {
   }
 }
 
-export default new PhoneController();
+export default new PhoneNumbersController();

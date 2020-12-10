@@ -191,7 +191,7 @@ paths:
           description: success
         403:
           description: forbidden
-  /phone/availableCountries:
+  /phoneNumbers/availableCountries:
     get:
       summary: Returning available phone number countries (countries list)
       tags:
