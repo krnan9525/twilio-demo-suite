@@ -163,7 +163,7 @@ export default {
       sendMessage: MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE
     }),
     ...numberMapMutation({
-      changeReceiverNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER
+      changeReceiverNumber: NUMBER_MUTATION_TYPES.SET_SMS_RECEIVER_NUMBER
     }),
     onBackClicked() {
       this.$router.back();

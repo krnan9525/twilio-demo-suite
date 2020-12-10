@@ -125,7 +125,7 @@ export default {
   },
   methods: {
     ...numberMapMutation({
-      changeReceiverNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER
+      changeReceiverNumber: NUMBER_MUTATION_TYPES.SET_SMS_RECEIVER_NUMBER
     }),
     openConversation() {
       this.changeReceiverNumber(this.number);
