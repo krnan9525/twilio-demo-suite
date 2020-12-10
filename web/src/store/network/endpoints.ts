@@ -13,6 +13,18 @@ export class Endpoints {
     get: '/api/v1/users/allLocalNumbers'
   };
 
+  availableCountries = {
+    get: '/api/v1/phoneNumbers/availableCountries'
+  };
+
+  numbersToBuy = {
+    get: '/api/v1/phoneNumbers/availableNumbers'
+  };
+
+  purchasePhoneNumber = {
+    post: '/api/v1/phoneNumbers/purchasePhoneNumber'
+  };
+
   calls = {
     post: '/api/v1/calls',
     get: '/api/v1/calls'

@@ -84,8 +84,8 @@ export default {
   methods: {
     ...numberMapAction([NUMBER_ACTION_TYPES.FETCH_NUMBERS]),
     ...numberMapMutation({
-      changeSelectedNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_SELECTED_NUMBER,
-      changeReceiverNumber: NUMBER_MUTATION_TYPES.CHANGE_SMS_RECEIVER_NUMBER
+      changeSelectedNumber: NUMBER_MUTATION_TYPES.SET_SMS_SELECTED_NUMBER,
+      changeReceiverNumber: NUMBER_MUTATION_TYPES.SET_SMS_RECEIVER_NUMBER
     }),
     ...messagesMapAction([MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER]),
     ...messagesMapMutation([

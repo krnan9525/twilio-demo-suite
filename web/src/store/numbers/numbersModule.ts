@@ -8,7 +8,10 @@ Vue.use(Vuex);
 
 const state: NumberStateInterface = {
   availableNumbers: [],
+  countryList: [],
+  numbersToBuy: [],
   loadingNumbers: false,
+  loadingBuyNumber: false,
   smsSelectedNumber: '',
   smsReceiverNumber: ''
 };
