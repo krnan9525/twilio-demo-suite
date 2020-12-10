@@ -28,7 +28,7 @@ const actions: ActionTree<NumberStateInterface, any> = {
     }
     return Promise.resolve(state.availableNumbers);
   },
-  [NUMBER_ACTION_TYPES.FORCE_FETCH_NUMBERS]: async (
+  [NUMBER_ACTION_TYPES.FORCE_FETCH_NUMBERS]: (
     { commit, state },
     { accountSid, accessToken }: AuthInterface
   ) => {
@@ -65,11 +65,14 @@ const actions: ActionTree<NumberStateInterface, any> = {
     }: SearchNumbersToBuyParamsInterface
   ) => {
     commit(NUMBER_MUTATION_TYPES.SET_NUMBERS_TO_BUY, []);
+    commit(NUMBER_MUTATION_TYPES.SET_LOADING_NUMBERS_TO_BUY, true);
     return Numbers.getNumbersToBuy(accountSid, accessToken, country, type)
       .then(res => {
         commit(NUMBER_MUTATION_TYPES.SET_NUMBERS_TO_BUY, res);
+        commit(NUMBER_MUTATION_TYPES.SET_LOADING_NUMBERS_TO_BUY, false);
       })
       .catch(() => {
+        commit(NUMBER_MUTATION_TYPES.SET_LOADING_NUMBERS_TO_BUY, false);
         throw new Error('error fetching numbers to buy');
       });
   },
@@ -85,7 +88,9 @@ const actions: ActionTree<NumberStateInterface, any> = {
       })
       .catch(() => {
         commit(NUMBER_MUTATION_TYPES.SET_LOADING_BUY_NUMBER, false);
-        throw new Error('error fetching numbers to buy');
+        throw new Error(
+          'error buying a new number -- you might need to update your Regulatory Bundle in Twilio console.'
+        );
       });
   }
 };

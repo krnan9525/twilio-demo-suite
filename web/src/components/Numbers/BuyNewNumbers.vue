@@ -6,7 +6,7 @@
       </md-card-header>
       <md-card-content>
         <div class="country-selection-container">
-          <md-field class="__field">
+          <md-field class="__country-field">
             <label for="countrySelection">
               Select a country to buy the number from
             </label>
@@ -24,7 +24,7 @@
               </md-option>
             </md-select>
           </md-field>
-          <md-field class="__field">
+          <md-field class="__type-field">
             <label for="typeSelection">
               Select a type
             </label>
@@ -38,9 +38,13 @@
               </md-option>
             </md-select>
           </md-field>
-          <md-button class="md-primary md-raised" @click="onSearchClicked"
-            >search</md-button
+          <md-button
+            class="md-primary md-raised"
+            @click="onSearchClicked"
+            :disabled="loadingNumbersToBuy"
           >
+            search
+          </md-button>
         </div>
 
         <div
@@ -99,7 +103,10 @@
 
 <script>
 import { createNamespacedHelpers, mapState } from 'vuex';
-import { NUMBER_ACTION_TYPES } from '@/store/numbers/interfaces';
+import {
+  NUMBER_ACTION_TYPES,
+  NUMBER_MUTATION_TYPES
+} from '@/store/numbers/interfaces';
 import SimpleSupportedCell from '@/components/Numbers/SimpleSupportedCell';
 
 const {
@@ -120,10 +127,16 @@ export default {
   },
   mounted() {
     this[NUMBER_ACTION_TYPES.FETCH_COUNTRIES](this.auth);
+    this[NUMBER_MUTATION_TYPES.CLEAR_NUMBERS_TO_BUY]();
   },
   computed: {
     ...mapState(['auth']),
-    ...numberMapState(['countryList', 'numbersToBuy', 'loadingBuyNumber']),
+    ...numberMapState([
+      'countryList',
+      'numbersToBuy',
+      'loadingBuyNumber',
+      'loadingNumbersToBuy'
+    ]),
     typeOptions() {
       if (!this.selectedCountry) {
         return [];
@@ -141,6 +154,7 @@ export default {
       NUMBER_ACTION_TYPES.FETCH_NUMBERS_TO_BUY,
       NUMBER_ACTION_TYPES.BUY_NEW_NUMBER
     ]),
+    ...numberMapMutation([NUMBER_MUTATION_TYPES.CLEAR_NUMBERS_TO_BUY]),
     onSearchClicked() {
       if (this.selectedCountry && this.selectedType) {
         this[NUMBER_ACTION_TYPES.FETCH_NUMBERS_TO_BUY]({
@@ -148,6 +162,10 @@ export default {
           country: this.selectedCountry,
           type: this.selectedType
         });
+      } else {
+        this.showSnackbar = true;
+        this.snackbarMessage =
+          'You need to select country and number type first.';
       }
     },
     onBuyClicked(number) {
@@ -187,8 +205,11 @@ export default {
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
-.__field {
-  max-width: 300px;
+.__type-field {
+  max-width: 150px;
+}
+.__country-field {
+  max-width: 400px;
 }
 
 /deep/ .numbers-to-buy-table {

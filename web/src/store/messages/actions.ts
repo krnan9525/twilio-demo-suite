@@ -11,7 +11,7 @@ import {
 import Sms from '@/store/network/sms';
 
 const actions: ActionTree<MessagesStateInterface, any> = {
-  [MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER]: async (
+  [MESSAGES_ACTION_TYPES.FETCH_MESSAGES_FOR_NUMBER]: (
     { commit, state },
     params: FetchMessagePayloadInterface
   ) => {
@@ -31,7 +31,7 @@ const actions: ActionTree<MessagesStateInterface, any> = {
         throw e;
       });
   },
-  [MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE]: async (
+  [MESSAGES_ACTION_TYPES.SEND_NEW_MESSAGE]: (
     { commit, state },
     data: CreateSmsPayloadInterface
   ) => {

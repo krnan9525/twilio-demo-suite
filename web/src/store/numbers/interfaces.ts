@@ -40,6 +40,7 @@ export interface NumberStateInterface {
   smsReceiverNumber: string;
   loadingNumbers: boolean;
   loadingBuyNumber: boolean;
+  loadingNumbersToBuy: boolean;
 }
 
 export interface CountryInterface {
@@ -55,7 +56,9 @@ export const NUMBER_MUTATION_TYPES = {
   SET_NUMBER_LOADING: 'SET_NUMBER_LOADING',
   SET_SMS_SELECTED_NUMBER: 'CHANGE_SELECTED_NUMBER',
   SET_SMS_RECEIVER_NUMBER: 'SET_SMS_RECEIVER_NUMBER',
-  SET_LOADING_BUY_NUMBER: 'SET_LOADING_BUY_NUMBER'
+  SET_LOADING_BUY_NUMBER: 'SET_LOADING_BUY_NUMBER',
+  CLEAR_NUMBERS_TO_BUY: 'CLEAR_NUMBERS_TO_BUY',
+  SET_LOADING_NUMBERS_TO_BUY: 'SET_LOADING_NUMBERS_TO_BUY'
 };
 
 export const NUMBER_ACTION_TYPES = {

@@ -12,6 +12,7 @@ const state: NumberStateInterface = {
   numbersToBuy: [],
   loadingNumbers: false,
   loadingBuyNumber: false,
+  loadingNumbersToBuy: false,
   smsSelectedNumber: '',
   smsReceiverNumber: ''
 };

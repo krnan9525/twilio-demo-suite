@@ -49,6 +49,15 @@ const mutations: MutationTree<NumberStateInterface> = {
     data: boolean
   ) {
     state.loadingBuyNumber = data;
+  },
+  [NUMBER_MUTATION_TYPES.CLEAR_NUMBERS_TO_BUY](state: NumberStateInterface) {
+    state.numbersToBuy = [];
+  },
+  [NUMBER_MUTATION_TYPES.SET_LOADING_NUMBERS_TO_BUY](
+    state: NumberStateInterface,
+    data: boolean
+  ) {
+    state.loadingNumbersToBuy = data;
   }
 };
 

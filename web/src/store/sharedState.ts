@@ -112,7 +112,7 @@ export const ACTION_TYPES = {
 };
 
 export const actions: ActionTree<SharedStateInterface, any> = {
-  [ACTION_TYPES.AUTHENTICATE]: async (
+  [ACTION_TYPES.AUTHENTICATE]: (
     { commit },
     { accountSid, accessToken }: AuthInterface
   ) => {
@@ -127,7 +127,7 @@ export const actions: ActionTree<SharedStateInterface, any> = {
       });
   },
   // this function resolves mutations so it can be committed after animations
-  [ACTION_TYPES.AUTHENTICATE_WITH_ANIMATION]: async (
+  [ACTION_TYPES.AUTHENTICATE_WITH_ANIMATION]: (
     { commit },
     { accountSid, accessToken }: AuthInterface
   ) => {
