@@ -207,7 +207,7 @@ paths:
     get:
       summary: Returning available phone numbers for country
       tags:
-        - countries
+        - phones
       parameters:
         - $ref: '#/components/parameters/authAccountSidParam'
         - $ref: '#/components/parameters/authTokenParam'
@@ -217,6 +217,23 @@ paths:
         200:
           description: Returned all available phone numbers for country
           content: {}
+  /phoneNumbers/purchasePhoneNumber:
+    post:
+      summary: Purchase a phone number
+      tags:
+        - phones
+      requestBody:
+        description: purchase phone number request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/purchasePhoneNumber'
+      responses:
+        204:
+          description: success
+        400:
+          description: number is not available
 
 components:
   parameters:
@@ -360,4 +377,17 @@ components:
         from:
           type: string
         to:
+          type: string
+    purchasePhoneNumber:
+      title: purchasePhoneNumber
+      required:
+      - accountSid
+      - accessToken
+      - phoneNumber
+      properties:
+        accountSid:
+          type: string
+        accessToken:
+          type: string
+        phoneNumber:
           type: string
