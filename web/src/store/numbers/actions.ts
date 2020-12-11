@@ -80,10 +80,10 @@ const actions: ActionTree<NumberStateInterface, any> = {
     { commit, state },
     { accountSid, accessToken, number }: BuyNumberParamsInterface
   ) => {
-    commit(NUMBER_MUTATION_TYPES.SET_NUMBERS_TO_BUY, []);
     commit(NUMBER_MUTATION_TYPES.SET_LOADING_BUY_NUMBER, true);
     return Numbers.buyNewNumber(accountSid, accessToken, number)
       .then(() => {
+        commit(NUMBER_MUTATION_TYPES.SET_NUMBERS_TO_BUY, []);
         commit(NUMBER_MUTATION_TYPES.SET_LOADING_BUY_NUMBER, false);
       })
       .catch(() => {

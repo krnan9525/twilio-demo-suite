@@ -116,17 +116,11 @@
 
 <script>
 import { mapState, createNamespacedHelpers } from 'vuex';
-import {
-  NUMBER_ACTION_TYPES,
-  NUMBER_MUTATION_TYPES
-} from '@/store/numbers/interfaces';
+import { NUMBER_MUTATION_TYPES } from '@/store/numbers/interfaces';
 import {
   MESSAGES_ACTION_TYPES,
-  MESSAGES_MUTATION_TYPES,
-  MESSAGE_GETTER_TYPES
+  MESSAGES_MUTATION_TYPES
 } from '@/store/messages/interfaces';
-import SmsTwilioNumberSelection from '@/components/Sms/SmsTwilioNumberSelection';
-import SmsConversationCard from '@/components/Sms/SmsConversationCard';
 import ChatBubble from '@/components/SmsInstance/ChatBubble';
 import SendMessageBar from '@/components/SmsInstance/SendMessageBar';
 

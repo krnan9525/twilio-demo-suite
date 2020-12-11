@@ -43,7 +43,7 @@
             @click="onSearchClicked"
             :disabled="loadingNumbersToBuy"
           >
-            search
+            {{ loadingNumbersToBuy ? 'searching...' : 'search' }}
           </md-button>
         </div>
 

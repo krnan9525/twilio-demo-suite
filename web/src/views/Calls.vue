@@ -8,6 +8,9 @@
         :account-sid="auth.accountSid"
       />
     </div>
+    <link-to-code-change-banner
+      link="https://www.twilio.com/code-exchange?f=voice&f=serverless&p=1"
+    />
     <md-snackbar
       md-position="center"
       :md-duration="2500"
@@ -25,10 +28,11 @@
 <script>
 import CallRouterInputForm from '@/components/Calls/CallRouterInputForm';
 import { mapState } from 'vuex';
+import LinkToCodeChangeBanner from '@/components/Common/LinkToCodeExchangeBanner';
 
 export default {
   name: 'calls-tab',
-  components: { CallRouterInputForm },
+  components: { LinkToCodeChangeBanner, CallRouterInputForm },
   computed: {
     ...mapState(['auth'])
   },

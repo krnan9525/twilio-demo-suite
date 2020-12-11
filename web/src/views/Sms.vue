@@ -2,11 +2,33 @@
   <div>
     <span class="tab-title">SMS</span>
     <div class="sms-inputs">
-      <sms-twilio-number-selection
-        class="sms-number-selection m-b-3"
-        v-model="twilioNumber"
-        :available-numbers="availableNumbers"
-      />
+      <md-card class="md-layout-item md-size-50 md-small-size-100">
+        <md-card-header>
+          <div class="md-title">
+            Select a Twilio Number
+          </div>
+        </md-card-header>
+        <md-card-content>
+          <md-field>
+            <label for="twilio-number">
+              Select a Twilio to fetch its message history
+            </label>
+            <md-select
+              name="twilioNumber"
+              id="twilio-number"
+              v-model="twilioNumber"
+            >
+              <md-option
+                v-for="(number, key) in availableNumbers"
+                :value="number.number"
+                :key="key"
+              >
+                {{ number.friendlyName }}
+              </md-option>
+            </md-select>
+          </md-field>
+        </md-card-content>
+      </md-card>
     </div>
     <div class="sms-conversations-container __m-t-2">
       <div
@@ -28,6 +50,9 @@
         </div>
       </div>
     </div>
+    <link-to-code-change-banner
+      link="https://www.twilio.com/code-exchange?q=&f=sms&f=serverless"
+    />
     <md-snackbar
       md-position="center"
       :md-duration="2500"
@@ -53,8 +78,8 @@ import {
   MESSAGES_MUTATION_TYPES,
   MESSAGE_GETTER_TYPES
 } from '@/store/messages/interfaces';
-import SmsTwilioNumberSelection from '@/components/Sms/SmsTwilioNumberSelection';
 import SmsConversationCard from '@/components/Sms/SmsConversationCard';
+import LinkToCodeChangeBanner from '@/components/Common/LinkToCodeExchangeBanner';
 
 const {
   mapState: numberMapState,
@@ -71,7 +96,25 @@ const {
 
 export default {
   name: 'sms',
-  components: { SmsConversationCard, SmsTwilioNumberSelection },
+  components: {
+    LinkToCodeChangeBanner,
+    SmsConversationCard
+  },
+  data() {
+    return {
+      snackbarMessage: '',
+      showSnackbar: false,
+      twilioNumber: undefined
+    };
+  },
+  mounted() {
+    this[MESSAGES_MUTATION_TYPES.RESET_MESSAGE_STATE]();
+    this[NUMBER_ACTION_TYPES.FETCH_NUMBERS](this.auth).then(() => {
+      if (this.availableNumbers && this.availableNumbers.length > 0) {
+        this.twilioNumber = this.availableNumbers[0].number;
+      }
+    });
+  },
   computed: {
     ...numberMapState(['availableNumbers', 'loadingNumbers']),
     ...mapState(['auth']),
@@ -99,17 +142,6 @@ export default {
         params: { fromNumber: this.twilioNumber }
       });
     }
-  },
-  data() {
-    return {
-      snackbarMessage: '',
-      showSnackbar: false,
-      twilioNumber: undefined
-    };
-  },
-  mounted() {
-    this[MESSAGES_MUTATION_TYPES.RESET_MESSAGE_STATE]();
-    this[NUMBER_ACTION_TYPES.FETCH_NUMBERS](this.auth);
   },
   watch: {
     twilioNumber(newValue) {

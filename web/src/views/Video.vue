@@ -13,6 +13,9 @@
       @passwordCreated="val => (password = val)"
       @roomCreated="val => (room = val)"
     />
+    <link-to-code-change-banner
+      link="https://www.twilio.com/code-exchange/basic-video-chat"
+    />
     <invite-link :password="password" :room="room"></invite-link>
   </div>
 </template>
@@ -21,10 +24,16 @@
 import VideoStatusHeader from '@/components/Video/VideoStatusHeader';
 import VideoChatBody from '@/components/Video/VideoChatBody';
 import InviteLink from '@/components/Video/InviteLink';
+import LinkToCodeChangeBanner from '@/components/Common/LinkToCodeExchangeBanner';
 
 export default {
   name: 'video-tab',
-  components: { InviteLink, VideoChatBody, VideoStatusHeader },
+  components: {
+    LinkToCodeChangeBanner,
+    InviteLink,
+    VideoChatBody,
+    VideoStatusHeader
+  },
   data() {
     return {
       isConnected: false,

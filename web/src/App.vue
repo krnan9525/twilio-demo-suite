@@ -14,8 +14,8 @@
           </div>
           <div v-if="isConnected" class="md-toolbar-row">
             <md-tabs class="md-primary" md-sync-route md-swipeable>
-              <md-tab id="tab-numbers" md-label="numbers" to="/numbers" exact />
-              <md-tab id="tab-calls" md-label="Calls" to="/" exact />
+              <md-tab id="tab-numbers" md-label="numbers" to="/" exact />
+              <md-tab id="tab-calls" md-label="Calls" to="/calls" exact />
               <md-tab
                 id="call-logs"
                 md-label="Call Logs"
