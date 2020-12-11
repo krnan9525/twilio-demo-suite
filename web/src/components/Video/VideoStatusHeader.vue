@@ -15,7 +15,9 @@
       <!--<div v-else class="__auth-token-info"></div>-->
       <div v-if="connected" class="__connected-info">
         <span class="md-subheading">Connected!</span>
-        <span class="md-subheading __m-l-3">Password: {{ password }}</span>
+        <span v-if="isOwner" class="md-subheading __m-l-3">
+          Password: {{ password }}
+        </span>
       </div>
     </div>
   </div>

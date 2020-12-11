@@ -164,7 +164,7 @@ export default {
                 composePublicationEle(publication, participant)
               );
             }
-          }, 250);
+          }, 1500);
         });
       });
     },
