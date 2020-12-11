@@ -89,7 +89,7 @@ const actions: ActionTree<NumberStateInterface, any> = {
       .catch(() => {
         commit(NUMBER_MUTATION_TYPES.SET_LOADING_BUY_NUMBER, false);
         throw new Error(
-          'error buying a new number -- you might need to update your Regulatory Bundle in Twilio console.'
+          'error buying a new number -- you might need to update your Regulatory Bundle in Twilio console OR you are on a trial account and have bought one number already.'
         );
       });
   }
