@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import L from '../../common/logger';
 
 export default function errorHandler(
   err,
@@ -8,5 +9,6 @@ export default function errorHandler(
   next: NextFunction
 ): void {
   const errors = err.errors || [{ message: err.message }];
+  L.error(errors);
   res.status(err.status || 500).json({ errors });
 }

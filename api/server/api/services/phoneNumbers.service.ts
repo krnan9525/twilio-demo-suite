@@ -113,7 +113,7 @@ class PhoneNumbersService {
     phoneNumber: string
   ) {
     return axios.post(
-      `https://preview.twilio.com/Numbers/ActiveNumbers`,
+      `${publicTwilioEndpoint2010}Accounts/${accountSid}/IncomingPhoneNumbers.json`,
       `PhoneNumber=${phoneNumber}`,
       {
         auth: {

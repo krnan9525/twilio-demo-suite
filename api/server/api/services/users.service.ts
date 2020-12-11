@@ -1,6 +1,7 @@
 import L from '../../common/logger';
 import axios from 'axios';
 import twilio from 'twilio';
+import { publicTwilioEndpoint2010 } from '../consts';
 
 interface ICapacityDirection {
   in: boolean;
@@ -31,7 +32,7 @@ export class UsersService {
     accountSid: string,
     accessToken: string
   ): Promise<INumber[]> {
-    const url = 'https://preview.twilio.com/Numbers/ActiveNumbers';
+    const url = `${publicTwilioEndpoint2010}Accounts/${accountSid}/IncomingPhoneNumbers.json`;
     try {
       const res = await axios.get(url, {
         auth: {
@@ -39,7 +40,7 @@ export class UsersService {
           password: accessToken
         }
       });
-      return res.data.items.map(number => {
+      return res.data.incoming_phone_numbers.map(number => {
         return {
           country:
             number.geography && number.geography.iso_country
@@ -49,30 +50,30 @@ export class UsersService {
           friendlyName:
             number.configurations && number.configurations.friendly_name
               ? number.configurations.friendly_name
-              : null,
+              : number.phone_number,
           sid: number.sid,
           voiceEnabled: {
             in: number?.capabilities
-              ? number?.capabilities?.voice?.inbound_connectivity === true
+              ? number?.capabilities?.voice === true
               : true,
             out: number?.capabilities
-              ? number?.capabilities?.voice?.outbound_connectivity === true
+              ? number?.capabilities?.voice === true
               : true
           },
           smsEnabled: {
             in: number?.capabilities
-              ? number?.capabilities?.sms?.inbound_connectivity === true
+              ? number?.capabilities?.sms === true
               : true,
             out: number?.capabilities
-              ? number?.capabilities?.sms?.outbound_connectivity === true
+              ? number?.capabilities?.sms === true
               : true
           },
           mmsEnabled: {
             in: number?.capabilities
-              ? number?.capabilities?.mms?.inbound_connectivity === true
+              ? number?.capabilities?.mms === true
               : true,
             out: number?.capabilities
-              ? number?.capabilities?.mms?.outbound_connectivity === true
+              ? number?.capabilities?.mms === true
               : true
           }
         } as INumber;
