@@ -47,10 +47,9 @@ export class UsersService {
               ? number.geography.iso_country
               : null,
           number: number.phone_number,
-          friendlyName:
-            number.configurations && number.configurations.friendly_name
-              ? number.configurations.friendly_name
-              : number.phone_number,
+          friendlyName: number.friendly_name
+            ? number.friendly_name
+            : number.phone_number,
           sid: number.sid,
           voiceEnabled: {
             in: number?.capabilities
