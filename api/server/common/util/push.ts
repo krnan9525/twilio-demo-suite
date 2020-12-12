@@ -16,7 +16,7 @@ export default function sendNotification(
   const vapidKeys = {
     publicKey:
       'BIxgxpz-2yCxYhx5a0sSByNCD8_X4lFciyI7ZfazdYFm_tYE7nZjlmzJHnikFnhblepF_BuKbTDKeFaMiRgR8-Y',
-    privateKey: '***REMOVED***'
+    privateKey: process.env.VAPID_PRIVATE_KEY
   };
 
   const options = {

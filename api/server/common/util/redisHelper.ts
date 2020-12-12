@@ -4,7 +4,7 @@ import { promisify } from 'util';
 const client = redis.createClient({
   url:
     process.env.NODE_ENV === 'production'
-      ? '***REMOVED***'
+      ? process.env.REDISTOGO_URL
       : undefined
 });
 const redisGet = promisify(client.get).bind(client);
