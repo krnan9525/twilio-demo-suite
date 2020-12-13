@@ -20,7 +20,7 @@ export default function sendNotification(
   };
 
   const options = {
-    gcmAPIKey: '***REMOVED***',
+    gcmAPIKey: process.env.GCM_API_KEY,
     TTL: 60
   };
 
