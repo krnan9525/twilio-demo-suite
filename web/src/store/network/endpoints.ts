@@ -1,7 +1,7 @@
 export class Endpoints {
   host =
     process.env.NODE_ENV === 'production'
-      ? 'https://calls.api.marknanyang.com'
+      ? 'https://intense-stream-63035.herokuapp.com'
       : 'http://localhost:3000';
 
   webLocation =

@@ -1,6 +1,6 @@
 export const hostUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://calls.api.marknanyang.com/'
+    ? 'https://intense-stream-63035.herokuapp.com/'
     : 'https://e0840943ae22.ngrok.io/';
 
 export const publicApiEndpoint = 'https://accounts.twilio.com/v1/';
