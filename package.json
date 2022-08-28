@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/krnan9525/call-router/issues"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "homepage": "https://github.com/krnan9525/call-router#readme"
 }
