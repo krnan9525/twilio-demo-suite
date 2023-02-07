@@ -15,7 +15,7 @@ const app = express();
 const corsOptions = {
   origin: 'https://calls.marknanyang.com',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+};
 
 export default class ExpressServer {
   constructor() {
@@ -32,7 +32,7 @@ export default class ExpressServer {
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(express.static(`${root}/public`));
     app.use(cors(corsOptions));
-    app.options('https://calls.marknanyang.com', cors())
+    app.options('https://calls.marknanyang.com', cors());
     app.use(
       morgan(':method :url :status :res[content-length] - :response-time ms')
     );
