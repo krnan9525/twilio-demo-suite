@@ -12,6 +12,11 @@ import morgan from 'morgan';
 
 const app = express();
 
+const corsOptions = {
+  origin: 'https://calls.marknanyang.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 export default class ExpressServer {
   constructor() {
     const root = path.normalize(__dirname + '/../..');
@@ -26,7 +31,8 @@ export default class ExpressServer {
     app.use(bodyParser.text({ limit: process.env.REQUEST_LIMIT || '100kb' }));
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(express.static(`${root}/public`));
-    app.use(cors());
+    app.use(cors(corsOptions));
+    app.options('https://calls.marknanyang.com', cors())
     app.use(
       morgan(':method :url :status :res[content-length] - :response-time ms')
     );
