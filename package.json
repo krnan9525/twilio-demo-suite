@@ -21,7 +21,11 @@
     "url": "https://github.com/krnan9525/call-router/issues"
   },
   "engines": {
-    "node": "14.x"
+    "node": "14.x",
+    "npm": "6.x"
   },
-  "homepage": "https://github.com/krnan9525/call-router#readme"
+  "homepage": "https://github.com/krnan9525/call-router#readme",
+  "volta": {
+    "node": "14.21.3"
+  }
 }
