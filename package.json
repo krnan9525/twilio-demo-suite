@@ -10,7 +10,7 @@
     "build:api": "cd api && npm run compile",
     "build:web": "cd web && npm run build",
     "build": "npm run build:api && npm run build:web",
-    "heroku-postbuild": "cd api/ && NODE_ENV=dev npm i && npm run compile && NPM_CONFIG_PRODUCTION=true NODE_ENV=production npm prune"
+    "heroku-postbuild": "cd api/ && NODE_ENV=dev npm install --no-save && npm run compile && NPM_CONFIG_PRODUCTION=true NODE_ENV=production npm prune"
   },
   "repository": {
     "type": "git",
